@@ -16,8 +16,8 @@
 #           Gabriel de Medeiros Almeida                 #
 #           Mauro Sérgio Rezende da Silva               #
 #           Silvio Barros Tenório                       #
-# Versão: 1.1                                           #
-# Data: 23/10/2025                                      #
+# Versão: 1.0                                           #
+# Data: 26/10/2025                                      #
 ######################################################### 
 
 from click import prompt
@@ -456,23 +456,29 @@ def create_appbar(page: ft.Page, api: ApiClient, titulo: str = "App MC Sonae", l
         leading_width=leading_with,
         title=ft.Text(titulo),
         bgcolor="#5299D3",
+        color=ft.Colors.WHITE,
         actions=[
             ft.Container(
                 content=ft.Row([
                     ft.Column([
-                        ft.Text(f"Id: {me.get('usuarioid', 'N/A')}", size=10, height=13), # type: ignore
-                        ft.Text(f"Nome: {me.get('nome', 'N/A')}", size=10, height=13), # type: ignore
-                        ft.Text(f"Email: {me.get('email', 'N/A')}", size=10, height=13), # type: ignore
-                        ft.Text(f"Tipo: {me.get('tipou', {}).get('tipo', 'N/A')}", size=10, height=13), # type: ignore
-                        ], spacing=1),
+                        # ft.Text(f"Id: {me.get('usuarioid', 'N/A')}", size=10, height=13), # type: ignore
+                        # ft.Text(f"Nome: {me.get('nome', 'N/A')}", size=10, height=13), # type: ignore
+                        # ft.Text(f"Email: {me.get('email', 'N/A')}", size=10, height=13), # type: ignore
+                        # ft.Text(f"Tipo: {me.get('tipou', {}).get('tipo', 'N/A')}", size=10, height=13), # type: ignore
+                        # ], spacing=1),
+                        ft.Text(f"{me.get('nome', 'N/A')}"), # type: ignore
+                        ], spacing=1, alignment=ft.MainAxisAlignment.CENTER),
+
                     ft.IconButton(
                         ft.Icons.PERSON,
                         tooltip="Mudar Senha Usuário",
+                        icon_color=ft.Colors.WHITE,
                         on_click=lambda _: page.go(f"/mudar/senha/{me.get('usuarioid', 'N/A')}")
                         ),
                     ft.IconButton(
                         ft.Icons.LOGOUT,
                         tooltip="Logout",
+                        icon_color=ft.Colors.WHITE,
                         on_click=lambda _: (
                             api.logout(),
                             page.go("/login")
@@ -525,7 +531,7 @@ def view_login(page: ft.Page, api: ApiClient) -> ft.View:
         route="/login",
         controls=[
             ft.AppBar(title=ft.Text("App MC Sonae"), 
-                      color=ft.Colors.BLACK, 
+                      color=ft.Colors.WHITE, 
                       bgcolor="#5299D3", 
                       leading=ft.Container(
                             content=ft.Image(src="logo1.png", width=50, height=50),
@@ -579,8 +585,8 @@ def view_menu(page: ft.Page, api: ApiClient) -> ft.View:
         return ft.ElevatedButton(
             content=ft.Row(
                 [
-                    ft.Icon(name=icon_name, size=32),
-                    ft.Text(value=title, size=18, weight=ft.FontWeight.BOLD),
+                    ft.Icon(name=icon_name, size=32, color=ft.Colors.WHITE),
+                    ft.Text(value=title, size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 spacing=10
@@ -1361,7 +1367,7 @@ def view_promtgeral_form(page: ft.Page, api: ApiClient, prompt_id: int) -> ft.Vi
     datahora_recife = objeto_datetime.astimezone(ZoneInfo("America/Recife"))
     datahora_br = datahora_recife.strftime('%d/%m/%Y %H:%M:%S')
 
-    tf_promptid = ft.TextField(label="Id", read_only=True, value=promptid)
+    # tf_promptid = ft.TextField(label="Id", read_only=True, value=promptid)
     tf_responsavel = ft.TextField(label="Responsável", read_only=True, value=responsavel)
     tf_datahora = ft.TextField(label="Data/Hora", read_only=True, value=datahora_br)
     tf_prompt = ft.TextField(label="Prompt", value=prompt, multiline=True, expand=True, max_lines=15)
@@ -1401,7 +1407,7 @@ def view_promtgeral_form(page: ft.Page, api: ApiClient, prompt_id: int) -> ft.Vi
                 content=ft.Column(
                     [
                         ft.Text("Prompt Geral", style=ft.TextThemeStyle.HEADLINE_MEDIUM),
-                        tf_promptid,
+                        # tf_promptid,
                         tf_responsavel,
                         tf_datahora,
                         tf_prompt,
@@ -1817,16 +1823,16 @@ def main(page: ft.Page):
 
     button_style = ft.ButtonStyle(
         color={
-            ft.ControlState.DEFAULT: ft.Colors.BLACK,
+            ft.ControlState.DEFAULT: ft.Colors.WHITE,
             ft.ControlState.DISABLED: ft.Colors.with_opacity(0.38, ft.Colors.BLACK),
-            ft.ControlState.HOVERED: ft.Colors.BLACK,
-            ft.ControlState.PRESSED: ft.Colors.BLACK,
+            ft.ControlState.HOVERED: ft.Colors.WHITE,
+            ft.ControlState.PRESSED: ft.Colors.WHITE,
         },
         icon_color={
-            ft.ControlState.DEFAULT: ft.Colors.BLACK,
+            ft.ControlState.DEFAULT: ft.Colors.WHITE,
             ft.ControlState.DISABLED: ft.Colors.with_opacity(0.38, ft.Colors.BLACK),
-            ft.ControlState.HOVERED: ft.Colors.BLACK,
-            ft.ControlState.PRESSED: ft.Colors.BLACK,
+            ft.ControlState.HOVERED: ft.Colors.WHITE,
+            ft.ControlState.PRESSED: ft.Colors.WHITE,
         },
         bgcolor={
             ft.ControlState.DEFAULT: "#5299D3",
@@ -1834,7 +1840,7 @@ def main(page: ft.Page):
             ft.ControlState.HOVERED: ft.Colors.with_opacity(0.8, "#5299D3"),
             ft.ControlState.PRESSED: ft.Colors.with_opacity(0.5, "#5299D3"),
         },
-        overlay_color=ft.Colors.with_opacity(0.12, ft.Colors.BLACK),
+        overlay_color=ft.Colors.with_opacity(0.12, ft.Colors.WHITE),
         side={
             ft.ControlState.DEFAULT: ft.BorderSide(1, ft.Colors.BLACK),
             ft.ControlState.DISABLED: ft.BorderSide(1, ft.Colors.with_opacity(0.38, ft.Colors.BLACK)),
