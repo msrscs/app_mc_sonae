@@ -54,20 +54,17 @@
 
     - Instalar as Bibliotecas
         + Flet
-          pip install flet
+            pip install flet
           Para criar um app Flet do zero:
-          flet create
+            flet create
+        + Flet Webview
+            pip install flet-webview  
         + Dotenv (Ambiente variáveis - Lê pares de valores-chave de um arquivo .env)
-          pip install python-dotenv
+            pip install python-dotenv
         + PyJWT (JSON Web Token)
-          pip install PyJWT
+            pip install PyJWT
         + Docling
             pip install docling
-
-
-        + token count
-            pip install token-count
-
             
 # Arquivos Python
     - app_mcsonae.py            => Arquivo main da App MC Sonae
@@ -75,11 +72,3 @@
 
 # Executar APP
     flet run app_mcsonae.py --web
-
-
-
-
-
-
-
-
