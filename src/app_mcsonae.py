@@ -17,10 +17,9 @@
 #           Mauro Sérgio Rezende da Silva               #
 #           Silvio Barros Tenório                       #
 # Versão: 1.0                                           #
-# Data: 26/10/2025                                      #
+# Data: 01/11/2025                                      #
 ######################################################### 
 
-from click import prompt
 import jwt # Adicionado para decodificar JWTs
 from datetime import datetime, timezone # Adicionado para verificar a expiração do token
 import flet as ft
@@ -31,6 +30,7 @@ from zoneinfo import ZoneInfo # Adicionado para conversão de fuso horário
 import os
 import re
 from utilidades import gerar_senha_forte, envia_email
+from docling.document_converter import DocumentConverter
 
 ##################################################
 # Carrega Variaveis de Ambiente
@@ -40,6 +40,16 @@ load_dotenv()
 CHAVE_API_GEMINI = os.getenv('CHAVE_API_GEMINI')
 CHAVE_API_BREVO  = os.getenv('CHAVE_API_BREVO')
 URL_API_MCSONAE = os.getenv('URL_API_MCSONAE')
+FLET_SECRET_KEY = os.getenv('FLET_SECRET_KEY')
+
+##################################################
+# Paleta de Cores
+##################################################
+COR_1 = "#021E73"
+COR_2 = "#5B7AD9"
+COR_3 = "#9EB6FF"
+COR_4 = "#D1DDFF"
+COR_5 = "#FFFFFF"
 
 ##################################################
 # Cliente da API
@@ -418,6 +428,21 @@ class ApiClient:
         except httpx.RequestError as e:
             return False, f"Erro de conexão: {e}"
 
+    # Cria um arquvivo no repositório do projeto.
+    def create_repositorio(self, repositorio_data: dict) -> tuple[bool, str]:
+        auth_client = self.get_authenticated_client()
+        if not auth_client:
+            return False, "Não autenticado."
+        
+        try:
+            response = auth_client.post("/repositorio/", json=repositorio_data)
+            response.raise_for_status()
+            return True, "Arquivo anexado ao repositório do Projeto com sucesso!"
+        except httpx.HTTPStatusError as e:
+            return False, f"Erro ao anexar arquivo ao repositório do projeto: {e.response.text}"
+        except httpx.RequestError as e:
+            return False, f"Erro de conexão: {e}"
+
 
 ##################################################
 # Definição das Telas (Views)
@@ -455,7 +480,7 @@ def create_appbar(page: ft.Page, api: ApiClient, titulo: str = "App MC Sonae", l
         leading=ft.Row(controls=leading_items),
         leading_width=leading_with,
         title=ft.Text(titulo),
-        bgcolor="#5299D3",
+        bgcolor=COR_1,
         color=ft.Colors.WHITE,
         actions=[
             ft.Container(
@@ -532,7 +557,7 @@ def view_login(page: ft.Page, api: ApiClient) -> ft.View:
         controls=[
             ft.AppBar(title=ft.Text("App MC Sonae"), 
                       color=ft.Colors.WHITE, 
-                      bgcolor="#5299D3", 
+                      bgcolor=COR_1, 
                       leading=ft.Container(
                             content=ft.Image(src="logo1.png", width=50, height=50),
                             padding=ft.padding.only(left=5)
@@ -780,12 +805,12 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
 
     cabecalho = ft.Row(
         controls=[
-            criar_celula(ft.Text("Id", weight=ft.FontWeight.BOLD), 150, ft.alignment.top_center),
-            criar_celula(ft.Text("Nome", weight=ft.FontWeight.BOLD), 350, ft.alignment.top_center),
-            criar_celula(ft.Text("Email", weight=ft.FontWeight.BOLD), 200, ft.alignment.top_center),
-            criar_celula(ft.Text("Tipo", weight=ft.FontWeight.BOLD), 150, ft.alignment.top_center),
-            criar_celula(ft.Text("Status", weight=ft.FontWeight.BOLD), 150, ft.alignment.top_center),
-            criar_celula(ft.Text("", weight=ft.FontWeight.BOLD), 200, ft.alignment.top_center),
+            criar_celula(ft.Text("Id", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+            criar_celula(ft.Text("Nome", weight=ft.FontWeight.BOLD, color=COR_5), 350, ft.alignment.top_center),
+            criar_celula(ft.Text("Email", weight=ft.FontWeight.BOLD, color=COR_5), 200, ft.alignment.top_center),
+            criar_celula(ft.Text("Tipo", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+            criar_celula(ft.Text("Status", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+            criar_celula(ft.Text("", weight=ft.FontWeight.BOLD, color=COR_5), 200, ft.alignment.top_center),
         ],
         spacing=0,
         vertical_alignment=ft.CrossAxisAlignment.START
@@ -798,13 +823,17 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
         for usu in users_data:
             cor = ft.Colors.BLACK
             if usu.get("status") == "Ativo": # type: ignore
-                cor = ft.Colors.GREEN_900
+                # cor = ft.Colors.GREEN_900
+                cor = ft.Colors.GREEN
             elif usu.get("status") == "Bloqueado": # type: ignore
-                cor = ft.Colors.ORANGE_900
+                # cor = ft.Colors.ORANGE_900
+                cor = ft.Colors.ORANGE
             elif usu.get("status") == "Cancelado": # type: ignore
-                cor = ft.Colors.RED_900
+                # cor = ft.Colors.RED_900
+                cor = ft.Colors.RED
             if zebrado:
-                cor_zebrado = "#A2BCE0"
+                cor_zebrado = COR_3
+                # cor_zebrado = "#A2BCE0"
                 # cor_zebrado = "#F17E69"
             else:
                 cor_zebrado = ft.Colors.WHITE
@@ -866,7 +895,7 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
                     bgcolor=cor_zebrado,
                     padding=0,
                     border=ft.border.only(
-                        top=ft.border.BorderSide(1, "#5299D3"),
+                        top=ft.border.BorderSide(1, COR_1),
                     )
                 )
             )
@@ -876,12 +905,13 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
             # Cabeçalho fixo
             ft.Container(
                 cabecalho,
-                bgcolor="#5299D3",
-                padding=10,
+                bgcolor=COR_1,
+                # padding=10,
+                padding=ft.padding.only(left=10, right=10, top=10, bottom=10),
                 border=ft.border.only(
-                    top=ft.border.BorderSide(1, "#5299D3"),
-                    left=ft.border.BorderSide(1, "#5299D3"),
-                    right=ft.border.BorderSide(1, "#5299D3")
+                    top=ft.border.BorderSide(1, COR_1),
+                    left=ft.border.BorderSide(1, COR_1),
+                    right=ft.border.BorderSide(1, COR_1)
                 )
             ),
             # Corpo com scroll
@@ -901,7 +931,8 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
             )
         ],
         spacing=0,
-        expand=True
+        # expand=True
+        width=1200
     )
 
     app_bar = create_appbar(
@@ -939,17 +970,24 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
                     ),
                     ft.Divider(),
                     # ft.Row([users_table], scroll=ft.ScrollMode.ALWAYS)
-                    ft.Column(
+                    # ft.Column(
+                    #     controls=[
+                    #         ft.Container(
+                    #             tabela,
+                    #             expand=True,
+                    #             border_radius=0,
+                    #         ),
+                    #     ],
+                    #     expand=True,
+                    # )
+                    ft.Row(
                         controls=[
-                            ft.Container(
-                                tabela,
-                                expand=True,
-                                border_radius=0,
-                            ),
+                            tabela
                         ],
                         expand=True,
+                        scroll=ft.ScrollMode.AUTO,
+                        vertical_alignment=ft.CrossAxisAlignment.START,
                     )
-
                 ],
                 expand=True
             ),
@@ -1349,7 +1387,7 @@ def view_mudar_senha_usuario_form(page: ft.Page, api: ApiClient, user_id: int) -
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
 
-# Renderiza a Tela de Cadastro/ Edição de Usuários.
+# Renderiza a Tela de Edição de Prompt Geral.
 def view_promtgeral_form(page: ft.Page, api: ApiClient, prompt_id: int) -> ft.View:
     prompt_data = api.get_prompt_geral(prompt_id)
     
@@ -1441,9 +1479,9 @@ def view_projeto_detail(page: ft.Page, api: ApiClient, projeto_id: int) -> ft.Vi
 
     cor = ft.Colors.BLACK
     if pj.get("status") == "Ativo": # type: ignore
-        cor = ft.Colors.GREEN_900
+        cor = ft.Colors.GREEN
     elif pj.get("status") == "Encerrado": # type: ignore
-        cor = ft.Colors.RED_900
+        cor = ft.Colors.RED
 
     detailsa = [ft.Text("Visualizar Projeto",style=ft.TextThemeStyle.HEADLINE_MEDIUM),
         ft.Text(f"Id: {pj.get('projetoid')}", weight=ft.FontWeight.BOLD, size=22),
@@ -1539,10 +1577,10 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
 
     cabecalho = ft.Row(
         controls=[
-            criar_pj_celula(ft.Text("Id", weight=ft.FontWeight.BOLD), 150, ft.alignment.top_center),
-            criar_pj_celula(ft.Text("Projeto", weight=ft.FontWeight.BOLD), 350, ft.alignment.top_center),
-            criar_pj_celula(ft.Text("Status", weight=ft.FontWeight.BOLD), 150, ft.alignment.top_center),
-            criar_pj_celula(ft.Text("", weight=ft.FontWeight.BOLD), 200, ft.alignment.top_center),
+            criar_pj_celula(ft.Text("Id", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+            criar_pj_celula(ft.Text("Projeto", weight=ft.FontWeight.BOLD, color=COR_5), 350, ft.alignment.top_center),
+            criar_pj_celula(ft.Text("Status", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+            criar_pj_celula(ft.Text("", weight=ft.FontWeight.BOLD, color=COR_5), 200, ft.alignment.top_center),
         ],
         spacing=0,
         vertical_alignment=ft.CrossAxisAlignment.START
@@ -1555,11 +1593,12 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
         for pj in projetos_data:
             cor = ft.Colors.BLACK
             if pj.get("status") == "Ativo": # type: ignore
-                cor = ft.Colors.GREEN_900
+                cor = ft.Colors.GREEN
             elif pj.get("status") == "Encerrado": # type: ignore
-                cor = ft.Colors.RED_900
+                cor = ft.Colors.RED
             if zebrado:
-                cor_zebrado = "#A2BCE0"
+                cor_zebrado = COR_3
+                # cor_zebrado = "#A2BCE0"
                 # cor_zebrado = "#F17E69"
             else:
                 cor_zebrado = ft.Colors.WHITE
@@ -1613,7 +1652,7 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
                     bgcolor=cor_zebrado,
                     padding=0,
                     border=ft.border.only(
-                        top=ft.border.BorderSide(1, "#5299D3"),
+                        top=ft.border.BorderSide(1, COR_1),
                     )
                 )
             )
@@ -1623,12 +1662,13 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
             # Cabeçalho fixo
             ft.Container(
                 cabecalho,
-                bgcolor="#5299D3",
-                padding=10,
+                bgcolor=COR_1,
+                # padding=10,
+                padding=ft.padding.only(left=10, right=10, top=10, bottom=10),
                 border=ft.border.only(
-                    top=ft.border.BorderSide(1, "#5299D3"),
-                    left=ft.border.BorderSide(1, "#5299D3"),
-                    right=ft.border.BorderSide(1, "#5299D3")
+                    top=ft.border.BorderSide(1, COR_1),
+                    left=ft.border.BorderSide(1, COR_1),
+                    right=ft.border.BorderSide(1, COR_1)
                 )
             ),
             # Corpo com scroll
@@ -1648,7 +1688,8 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
             )
         ],
         spacing=0,
-        expand=True
+        # expand=True
+        width=850,
     )
 
     app_bar = create_appbar(
@@ -1686,15 +1727,23 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
                     ),
                     ft.Divider(),
                     # ft.Row([users_table], scroll=ft.ScrollMode.ALWAYS)
-                    ft.Column(
+                    # ft.Column(
+                    #     controls=[
+                    #         ft.Container(
+                    #             tabela,
+                    #             expand=True,
+                    #             border_radius=0,
+                    #         ),
+                    #     ],
+                    #     expand=True,
+                    # )
+                    ft.Row(
                         controls=[
-                            ft.Container(
-                                tabela,
-                                expand=True,
-                                border_radius=0,
-                            ),
+                            tabela,
                         ],
                         expand=True,
+                        scroll=ft.ScrollMode.AUTO,
+                        vertical_alignment=ft.CrossAxisAlignment.START,
                     )
 
                 ],
@@ -1802,6 +1851,188 @@ def view_placeholder(page: ft.Page, api: ApiClient, title: str, route: str) -> f
         ]
     )
 
+# Renderiza a Tela de Anexar Arquivos ao Repositório.
+def view_repositorio_form(page: ft.Page, api: ApiClient) -> ft.View:
+    extensao_validas = ["pdf", "docx", "xlsx"]
+    projetos = api.get_projetos()
+    projetos_options = []
+    if projetos is not None:
+        for projeto in projetos:
+            if projeto.get("status") == "Ativo": # type: ignore
+                projetos_options.append(ft.dropdown.Option(key=projeto.get("projetoid"), text=projeto.get("projeto")))
+
+    projeto_dropdown = ft.dropdown.Dropdown(
+        label="Projeto",
+        options=projetos_options,
+        width=500,
+    )
+
+    progresso = ft.ProgressRing(value=0, width=20, height=20, color=COR_1, visible=False)
+    progresso_status = ft.Text("", color=COR_1, weight=ft.FontWeight.BOLD)
+    progresso_ok = ft.Icon(name=ft.Icons.CHECK_CIRCLE, color=ft.Colors.GREEN_400, size=30, visible=False)
+    indicador = ft.ProgressRing(width=60, height=60, color=COR_1, visible=False)
+    extensao=""
+    upload_url = ""
+
+    def pick_files_result(e: ft.FilePickerResultEvent):
+        nonlocal extensao
+        nonlocal upload_url
+        progresso_status.value = ""
+        progresso.value = 0
+        progresso.visible = True
+        progresso_ok.visible = False
+        progresso.update()  
+        progresso_status.update()
+        progresso_ok.update()
+        extensao = e.files[0].name.split(".")[-1].lower() if e.files else ""
+        selected_files.value = (
+            e.files[0].name if e.files else "Cancelado!"
+        )
+        selected_files.update()
+        # Criar lista de arquivos para upload com uma URL de destino
+        if e.files:
+            arquivo_upload = e.files[0]
+            upload_url = page.get_upload_url(arquivo_upload.name, 600)
+            upload_file = ft.FilePickerUploadFile(
+                    arquivo_upload.name,
+                    upload_url=upload_url
+                ) 
+            pick_files_dialog.upload([upload_file])  # Envia apenas um
+    
+    def on_upload(e: ft.FilePickerUploadEvent):
+        if e.progress is not None:
+            progresso.value = e.progress
+            progresso_status.value = f"[{e.progress * 100:.0f}%]"
+            if e.progress == 1.0:
+                progresso_status.value = "[Upload finalizado]"
+                progresso.visible = False
+                progresso_ok.visible = True
+                progresso_status.visible = False
+        progresso_ok.update()
+        progresso_status.update()
+        progresso.update()
+
+    pick_files_dialog = ft.FilePicker(on_result=pick_files_result, on_upload=on_upload)
+    selected_files = ft.Text()
+    
+    page.overlay.append(pick_files_dialog)
+
+    bt_arquivo = ft.Row(
+            [
+                ft.ElevatedButton(
+                    "Selecionar Arquivo",
+                    icon=ft.Icons.UPLOAD_FILE,
+                    color=ft.Colors.WHITE,
+                    style=button_style,
+                    on_click=lambda _: pick_files_dialog.pick_files(
+                        allow_multiple=False, allowed_extensions=extensao_validas
+                    ),
+                ),
+                selected_files,
+            ]
+        )
+
+    # Coleta os dados do formulário
+    def on_anexar_click(e):
+
+        if not selected_files.value or selected_files.value == "Cancelado!":
+            show_snackbar(page, "Nenhum arquivo foi selecionado ou o upload foi cancelado.", ft.Colors.RED)
+            return
+        if extensao not in extensao_validas:
+            show_snackbar(page, "Extensão do arquivo inválida.", ft.Colors.RED)
+            return 
+        if projeto_dropdown.value is None:
+            show_snackbar(page, "Projeto inválido.", ft.Colors.RED)
+            return 
+
+        indicador.visible = True
+        indicador.update()
+
+        try:
+            diretorio_base = os.path.dirname(os.path.abspath(__file__))
+            caminho_do_arquivo_local = os.path.join(diretorio_base, "uploads", selected_files.value)
+
+            converter = DocumentConverter()
+            result = converter.convert(source=caminho_do_arquivo_local)
+
+            docling_txt = result.document.export_to_markdown()
+        except Exception as ex:
+            show_snackbar(page, f"Erro ao processar o arquivo: {ex}", ft.Colors.RED)
+            indicador.visible = False
+            indicador.update()
+            return
+
+        print(docling_txt)
+
+        # docling_txt = ""
+        # Gera a data e hora atual no formato ISO 8601 UTC
+        data_hora_utc = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+
+        data = {
+            "markdown": docling_txt,
+            "tipoarquivo": extensao,
+            "projetoid": projeto_dropdown.value,
+            "usuarioid": 0,
+            "datahora": data_hora_utc,
+        }
+
+        success, message = api.create_repositorio(data) # type: ignore
+
+        if success:
+            show_snackbar(page, message, ft.Colors.GREEN)
+            page.go("/menu")
+        else:
+            show_snackbar(page, message, ft.Colors.RED)
+
+    app_bar = create_appbar(
+        page, api,
+        titulo="App MC Sonae - Anexar Arquivo no Repositório do Projeto", 
+        leading_control=ft.IconButton(icon=ft.Icons.ARROW_BACK, on_click=lambda _: page.go("/menu"), tooltip="Voltar")
+    )
+
+    bt_anexar = ft.ElevatedButton("Anexar Arquivo", style=button_style, on_click=on_anexar_click, icon=ft.Icons.ATTACH_FILE)
+
+    return ft.View(
+        route=f"/repositorio",
+        appbar=app_bar,
+        controls=[
+            ft.Container(
+                content=ft.Column(
+                    [
+                        ft.Text("Anexar Arquivo no Repositório do Projeto", style=ft.TextThemeStyle.HEADLINE_MEDIUM),
+                        projeto_dropdown,
+                        ft.Row(
+                            [
+                                bt_arquivo,
+                                progresso,
+                                progresso_status,
+                                progresso_ok,
+                            ],
+                            alignment=ft.MainAxisAlignment.START
+                        ),
+                        ft.Row(
+                            [
+                                bt_anexar,
+                            ],
+                            alignment=ft.MainAxisAlignment.END
+                        ),
+                        ft.Row(
+                            [
+                                indicador,
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER
+                        )
+                    ],
+                    spacing=15
+                ),
+                padding=20,
+                width=800,
+                alignment=ft.alignment.center
+            )
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
 ##################################################
 # Roteador Principal
 ##################################################
@@ -1835,10 +2066,10 @@ def main(page: ft.Page):
             ft.ControlState.PRESSED: ft.Colors.WHITE,
         },
         bgcolor={
-            ft.ControlState.DEFAULT: "#5299D3",
-            ft.ControlState.DISABLED: ft.Colors.with_opacity(0.12, "#5299D3"),
-            ft.ControlState.HOVERED: ft.Colors.with_opacity(0.8, "#5299D3"),
-            ft.ControlState.PRESSED: ft.Colors.with_opacity(0.5, "#5299D3"),
+            ft.ControlState.DEFAULT: COR_1,
+            ft.ControlState.DISABLED: ft.Colors.with_opacity(0.12, COR_1),
+            ft.ControlState.HOVERED: ft.Colors.with_opacity(0.8, COR_1),
+            ft.ControlState.PRESSED: ft.Colors.with_opacity(0.5, COR_1),
         },
         overlay_color=ft.Colors.with_opacity(0.12, ft.Colors.WHITE),
         side={
@@ -1902,7 +2133,7 @@ def main(page: ft.Page):
                 page.views.append(view_projetos_list(page, api))
                 page.views.append(view_projeto_detail(page, api, projeto_id=projeto_id))
             elif troute.match("/repositorio"):
-                page.views.append(view_placeholder(page, api, "Anexar Arquivo no Repositório", "/repositorio"))
+                page.views.append(view_repositorio_form(page, api))
             elif troute.match("/consultar"):
                 page.views.append(view_placeholder(page, api, "Consultar Projeto", "/consultar"))
             elif troute.match("/promptgeral"):
@@ -1938,5 +2169,6 @@ if __name__ == "__main__":
     ft.app(
         target=main, 
         view=ft.AppView.WEB_BROWSER,
-        port=8550
+        port=8550,
+        upload_dir="uploads"
     )

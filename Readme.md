@@ -65,10 +65,27 @@
             pip install PyJWT
         + Docling
             pip install docling
-            
+    
 # Arquivos Python
     - app_mcsonae.py            => Arquivo main da App MC Sonae
     - utilidades.py             => Arquivo de Utilidades 
 
 # Executar APP
+    Linux:
+        export FLET_SECRET_KEY="$2b$12$lEqyKxLYq5QQFjC5XF/uke1VfU1VKwI/DIlraQAAuJsK29hinWEOe"
+    Windows:
+        set FLET_SECRET_KEY=$2b$12$lEqyKxLYq5QQFjC5XF/uke1VfU1VKwI/DIlraQAAuJsK29hinWEOe
     flet run app_mcsonae.py --web
+
+# CUDA 
+    - Versão:
+        12.9
+    - Comandos: 
+        nvcc --version
+        nvidia-smi
+    - No meu notebook com Windows 11 (instalar depois )
+        pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu129
+    
+    - Testes:
+        python -c "import torch; print(torch.__version__)"
+        python -c "from docling.document_converter import DocumentConverter; print('Docling OK!')"

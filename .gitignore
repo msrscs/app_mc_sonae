@@ -169,4 +169,5 @@ data_scraper.py
 denunciante.py
 gerencial.py
 main.py
+conversor_pdf_markdown.py
 README_flet.md
