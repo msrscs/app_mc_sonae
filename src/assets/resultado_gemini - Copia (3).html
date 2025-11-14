@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto: Produção de Timesheets</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0056b3;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #0056b3;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .chart-container {
+            width: 90%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .info-nao-processada {
+            color: #777;
+            font-style: italic;
+        }
+        .logo-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            width: 30%;
+            max-width: 200px; /* Adjust max-width as needed */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo">
+        </div>
+        <h1>Projeto: Produção de Timesheets (ID: 14)</h1>
+
+        <h2>Documento 1: Entidade</h2>
+        <h3>Resumo</h3>
+        <p>Este documento identifica a entidade principal associada ao projeto como "XXX".</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Entidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>XXX</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Documento 2: Projeto ATE e Colaborador</h2>
+        <h3>Resumo</h3>
+        <p>Este documento associa o colaborador com o número mecanográfico 362099 ao "Projeto ATE".</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Projeto</th>
+                    <th>Colaborador</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ATE</td>
+                    <td>nº 362099</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Documento 3: Mapa de Horas Trabalhadas</h2>
+        <h3>Resumo</h3>
+        <p>Este documento detalha o mapa de horas trabalhadas potenciais para o colaborador 362099 ao longo de vários meses, desde janeiro de 2024 até junho de 2025. Inclui a jornada diária, o número de dias úteis trabalháveis e as horas trabalháveis potenciais. Todas as horas potenciais são atribuídas a "Outras atividades", não havendo registos específicos para projetos como X, Y, Z, A, B, C, D ou Férias/Baixas/Licenças/Faltas neste mapa.</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Período</th>
+                    <th>Jornada diária</th>
+                    <th>Nº de dias úteis trabalháveis (*)</th>
+                    <th>Horas trabalháveis potenciais</th>
+                    <th>Férias/Baixas/Licenças/Faltas</th>
+                    <th>Projeto X</th>
+                    <th>Projeto Y</th>
+                    <th>Projeto Z</th>
+                    <th>Projeto A</th>
+                    <th>Projeto B</th>
+                    <th>Projeto C</th>
+                    <th>Projeto D</th>
+                    <th>Outras atividades</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>2024-01-01 00:00:00</td><td>8</td><td>22</td><td>176</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>176</td><td>176</td></tr>
+                <tr><td>2024-02-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2024-03-01 00:00:00</td><td>8</td><td>20</td><td>160</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>160</td><td>160</td></tr>
+                <tr><td>2024-04-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2024-05-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2024-06-01 00:00:00</td><td>8</td><td>19</td><td>152</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>152</td><td>152</td></tr>
+                <tr><td>2024-07-01 00:00:00</td><td>8</td><td>23</td><td>184</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>184</td><td>184</td></tr>
+                <tr><td>2024-08-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2024-09-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2024-10-01 00:00:00</td><td>8</td><td>23</td><td>184</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>184</td><td>184</td></tr>
+                <tr><td>2024-11-01 00:00:00</td><td>8</td><td>20</td><td>160</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>160</td><td>160</td></tr>
+                <tr><td>2024-12-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2025-01-01 00:00:00</td><td>8</td><td>22</td><td>176</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>176</td><td>176</td></tr>
+                <tr><td>2025-02-01 00:00:00</td><td>8</td><td>20</td><td>160</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>160</td><td>160</td></tr>
+                <tr><td>2025-03-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2025-04-01 00:00:00</td><td>8</td><td>20</td><td>160</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>160</td><td>160</td></tr>
+                <tr><td>2025-05-01 00:00:00</td><td>8</td><td>21</td><td>168</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>168</td><td>168</td></tr>
+                <tr><td>2025-06-01 00:00:00</td><td>8</td><td>19</td><td>152</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>152</td><td>152</td></tr>
+            </tbody>
+        </table>
+        <h3>Gráfico: Horas Trabalháveis Potenciais Mensais</h3>
+        <div class="chart-container">
+            <canvas id="horasPotenciaisChart"></canvas>
+        </div>
+
+        <h2>Documento 4: Colaborador (Título)</h2>
+        <h3>Resumo</h3>
+        <p class="info-nao-processada">INFORMAÇÃO NÃO PROCESSADA</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Colaborador</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Documento 5: Gestor de Projeto (Título)</h2>
+        <h3>Resumo</h3>
+        <p class="info-nao-processada">INFORMAÇÃO NÃO PROCESSADA</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Gestor de Projecto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Documento 6: Recibo de Vencimento - Setembro 2024</h2>
+        <h3>Resumo</h3>
+        <p>Este documento detalha o recibo de vencimento do colaborador nº 362099 para o período de processamento de setembro de 2024. A categoria profissional é "TECN.LICENCIADO-A" e o centro de custo é "R&D+Incentives". O vencimento base é de 2.780,00 EUR, com um salário hora de 16,04 EUR. Os abonos totais foram de 2.920,00 EUR (incluindo 140,00 EUR de subsídio de alimentação) e os descontos totalizaram 556,80 EUR, resultando num total líquido de 2.363,20 EUR.</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Período de Processamento</td><td>09/2024</td></tr>
+                <tr><td>Data de Processamento</td><td>30/09/2024</td></tr>
+                <tr><td>Colaborador Nº</td><td>362099</td></tr>
+                <tr><td>Categoria Profissional</td><td>TECN.LICENCIADO-A</td></tr>
+                <tr><td>Centro de Custo</td><td>R&D+Incentives</td></tr>
+                <tr><td>Acidentes de Trabalho (Seguradora)</td><td>Fidelidade-Companhia de Seguros,SA.</td></tr>
+                <tr><td>Vencimento Base</td><td>2780,00 EUR</td></tr>
+                <tr><td>Salário Hora</td><td>16,04 EUR</td></tr>
+                <tr><td>Abonos (Vencimento Base)</td><td>2.780,00</td></tr>
+                <tr><td>Abonos (Sub.Alim./Tick(D)- Isento)</td><td>140,00</td></tr>
+                <tr><td>Descontos (Seg. Social)</td><td>305,80</td></tr>
+                <tr><td>Descontos (IRS)</td><td>111,00</td></tr>
+                <tr><td>Descontos (Desc. Alimentação /Ticket)</td><td>140,00</td></tr>
+                <tr><td>TOTAL ABONOS</td><td>2.920,00</td></tr>
+                <tr><td>TOTAL DESCONTOS</td><td>556,80</td></tr>
+                <tr><td>TOTAL LÍQUIDO</td><td>2.363,20</td></tr>
+                <tr><td>Acumulado (Vencimento Base)</td><td>27.800,00</td></tr>
+                <tr><td>Titularidade de Rendimentos</td><td>CASADO 2 TITULARES</td></tr>
+                <tr><td>Forma de Pagamento</td><td>PARA CONTA PT50003503260000540153025</td></tr>
+            </tbody>
+        </table>
+        <h3>Gráfico: Comparativo de Abonos e Descontos - Setembro 2024</h3>
+        <div class="chart-container">
+            <canvas id="vencimento2024Chart"></canvas>
+        </div>
+
+        <h2>Documento 7: Recibo de Vencimento - Setembro 2023</h2>
+        <h3>Resumo</h3>
+        <p>Este documento apresenta o recibo de vencimento do colaborador nº 362099 para o período de processamento de setembro de 2023. A categoria profissional é "TECN.LICENCIADO-A" e o centro de custo é "R&D+Incentives". O vencimento base é de 2.700,00 EUR, com um salário hora de 15,58 EUR. Os abonos totais foram de 2.847,00 EUR (incluindo 147,00 EUR de subsídio de alimentação) e os descontos totalizaram 1.068,00 EUR, resultando num total líquido de 1.779,00 EUR.</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Período de Processamento</td><td>09/2023</td></tr>
+                <tr><td>Data de Processamento</td><td>30/09/2023</td></tr>
+                <tr><td>Colaborador Nº</td><td>362099</td></tr>
+                <tr><td>Categoria Profissional</td><td>TECN.LICENCIADO-A</td></tr>
+                <tr><td>Centro de Custo</td><td>R&D+Incentives</td></tr>
+                <tr><td>Acidentes de Trabalho (Apólice)</td><td>AT61080352 Fidelidade-Companhia</td></tr>
+                <tr><td>Vencimento Base</td><td>2700,00 EUR</td></tr>
+                <tr><td>Salário Hora</td><td>15,58 EUR</td></tr>
+                <tr><td>Abonos (Vencimento Base)</td><td>2.700,00</td></tr>
+                <tr><td>Abonos (Sub.Alim./Tick(D)- Isento)</td><td>147,00</td></tr>
+                <tr><td>Descontos (Seg. Social)</td><td>297,00</td></tr>
+                <tr><td>Descontos (IRS)</td><td>624,00</td></tr>
+                <tr><td>Descontos (Desc. Alimentação /Ticket)</td><td>147,00</td></tr>
+                <tr><td>TOTAL ABONOS</td><td>2.847,00</td></tr>
+                <tr><td>TOTAL DESCONTOS</td><td>1.068,00</td></tr>
+                <tr><td>TOTAL LÍQUIDO</td><td>1.779,00</td></tr>
+                <tr><td>Acumulado (Vencimento Base)</td><td>27.000,00</td></tr>
+                <tr><td>Titularidade de Rendimentos</td><td>CASADO 2 TITULARES</td></tr>
+                <tr><td>Forma de Pagamento</td><td>PARA CONTA PT50003503260000540153025</td></tr>
+            </tbody>
+        </table>
+        <h3>Gráfico: Comparativo de Abonos e Descontos - Setembro 2023</h3>
+        <div class="chart-container">
+            <canvas id="vencimento2023Chart"></canvas>
+        </div>
+
+        <h2>Documento 8: Aprender (Título)</h2>
+        <h3>Resumo</h3>
+        <p class="info-nao-processada">INFORMAÇÃO NÃO PROCESSADA</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Aprender</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Documento 9: Alocação de Horas por Projeto</h2>
+        <h3>Resumo</h3>
+        <p>Este documento detalha a alocação de horas mensais para o colaborador 362099 em diversos projetos (ISAFETY, ATE, Produtech R3, Test Bed Retalho, Be@t, Responsible AI) cobrindo o período de dezembro de 2022 a dezembro de 2025. As horas representam o esforço dedicado a cada projeto, sendo que os valores "None" são considerados 0 para efeitos de cálculo.</p>
+        <h3>Tabela de Dados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>PROJETO</th>
+                    <th>Tipologia</th>
+                    <th>Número mecanográfico</th>
+                    <th>Recurso</th>
+                    <th>Departamento</th>
+                    <th>dez/22</th>
+                    <th>jan/23</th>
+                    <th>fev/23</th>
+                    <th>mar/23</th>
+                    <th>abr/23</th>
+                    <th>mai/23</th>
+                    <th>jun/23</th>
+                    <th>jul/23</th>
+                    <th>ago/23</th>
+                    <th>set/23</th>
+                    <th>out/23</th>
+                    <th>nov/23</th>
+                    <th>dez/23</th>
+                    <th>jan/24</th>
+                    <th>fev/24</th>
+                    <th>mar/24</th>
+                    <th>abr/24</th>
+                    <th>mai/24</th>
+                    <th>jun/24</th>
+                    <th>jul/24</th>
+                    <th>ago/24</th>
+                    <th>set/24</th>
+                    <th>out/24</th>
+                    <th>nov/24</th>
+                    <th>dez/24</th>
+                    <th>jan/25</th>
+                    <th>fev/25</th>
+                    <th>mar/25</th>
+                    <th>abr/25</th>
+                    <th>mai/25</th>
+                    <th>jun/25</th>
+                    <th>jul/25</th>
+                    <th>ago/25</th>
+                    <th>set/25</th>
+                    <th>out/25</th>
+                    <th>nov/25</th>
+                    <th>dez/25</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>ISAFETY</td><td>P2020</td><td>362099</td><td>XXX</td><td>R&D+Inc.</td><td>0</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>ATE</td><td>PRR</td><td>362099</td><td>XXX</td><td>R&D+Inc.</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                <tr><td>Produtech R3</td><td>PRR</td><td>362099</td><td>XXX</td><td>R&D+Inc.</td><td>20</td><td>4</td><td>4</td><td>5</td><td>3</td><td>4</td><td>3</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1.75</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>2.5</td><td>2</td><td>4</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>7</td><td>7</td><td>7</td><td>5</td><td>5</td><td>5</td><td>7</td><td>7</td></tr>
+                <tr><td>Test Bed Retalho</td><td>PRR</td><td>362099</td><td>XXX</td><td>R&D+Inc.</td><td>None</td><td>2</td><td>2</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+                <tr><td>Be@t</td><td>PRR</td><td>362099</td><td>XXX</td><td>R&D+Inc.</td><td>0</td><td>3</td><td>2</td><td>4</td><td>1</td><td>2</td><td>1</td><td>12</td><td>0</td><td>8</td><td>8</td><td>8</td><td>8</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td></tr>
+                <tr><td>Responsible AI</td><td>PRR</td><td>362099</td><td>XXX</td><td>R&D+Inc.</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>0</td><td>0</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+            </tbody>
+        </table>
+        <h3>Gráfico: Total de Horas Alocadas por Projeto (Dez/22 - Dez/25)</h3>
+        <div class="chart-container">
+            <canvas id="projectHoursTotalChart"></canvas>
+        </div>
+        <h3>Gráfico: Horas Alocadas Mensalmente por Projeto (Dez/22 - Dez/25)</h3>
+        <div class="chart-container">
+            <canvas id="projectHoursMonthlyChart"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        // Document 3: Mapa de Horas Trabalhadas
+        const horasPotenciaisData = {
+            labels: ["Jan/24", "Fev/24", "Mar/24", "Abr/24", "Mai/24", "Jun/24", "Jul/24", "Ago/24", "Set/24", "Out/24", "Nov/24", "Dez/24", "Jan/25", "Fev/25", "Mar/25", "Abr/25", "Mai/25", "Jun/25"],
+            values: [176, 168, 160, 168, 168, 152, 184, 168, 168, 184, 160, 168, 176, 160, 168, 160, 168, 152]
+        };
+        new Chart(document.getElementById('horasPotenciaisChart'), {
+            type: 'line',
+            data: {
+                labels: horasPotenciaisData.labels,
+                datasets: [{
+                    label: 'Horas Trabalháveis Potenciais',
+                    data: horasPotenciaisData.values,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Horas'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Mês'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Document 6: Recibo de Vencimento 2024
+        new Chart(document.getElementById('vencimento2024Chart'), {
+            type: 'bar',
+            data: {
+                labels: ['Total Abonos', 'Total Descontos', 'Total Líquido'],
+                datasets: [{
+                    label: 'Valores (EUR)',
+                    data: [2920.00, 556.80, 2363.20],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (EUR)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Document 7: Recibo de Vencimento 2023
+        new Chart(document.getElementById('vencimento2023Chart'), {
+            type: 'bar',
+            data: {
+                labels: ['Total Abonos', 'Total Descontos', 'Total Líquido'],
+                datasets: [{
+                    label: 'Valores (EUR)',
+                    data: [2847.00, 1068.00, 1779.00],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (EUR)'
+                        }
+                    }
+                }
+                
+            }
+        });
+
+        // Document 9: Alocação de Horas por Projeto
+        const projectData = {
+            projects: ["ISAFETY", "ATE", "Produtech R3", "Test Bed Retalho", "Be@t", "Responsible AI"],
+            months: ["dez/22", "jan/23", "fev/23", "mar/23", "abr/23", "mai/23", "jun/23", "jul/23", "ago/23", "set/23", "out/23", "nov/23", "dez/23", "jan/24", "fev/24", "mar/24", "abr/24", "mai/24", "jun/24", "jul/24", "ago/24", "set/24", "out/24", "nov/24", "dez/24", "jan/25", "fev/25", "mar/25", "abr/25", "mai/25", "jun/25", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25"],
+            hours: {
+                "ISAFETY": [0, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "ATE": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2],
+                "Produtech R3": [20, 4, 4, 5, 3, 4, 3, 1, 0, 1, 1, 1, 1.75, 3, 3, 3, 3, 3, 3, 3, 2.5, 2, 4, 3, 3, 3, 3, 3, 3, 7, 7, 7, 5, 5, 5, 7, 7],
+                "Test Bed Retalho": [0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+                "Be@t": [0, 3, 2, 4, 1, 2, 1, 12, 0, 8, 8, 8, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+                "Responsible AI": [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2]
+            }
+        };
+
+        // Calculate total hours per project
+        const totalHoursPerProject = {};
+        for (const project in projectData.hours) {
+            totalHoursPerProject[project] = projectData.hours[project].reduce((sum, current) => sum + (current || 0), 0);
+        }
+
+        const totalProjectLabels = Object.keys(totalHoursPerProject);
+        const totalProjectValues = Object.values(totalHoursPerProject);
+
+        // Chart 1: Total Hours Allocated by Project
+        new Chart(document.getElementById('projectHoursTotalChart'), {
+            type: 'bar',
+            data: {
+                labels: totalProjectLabels,
+                datasets: [{
+                    label: 'Total de Horas',
+                    data: totalProjectValues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total de Horas'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Monthly Hours Allocated by Project (Stacked Bar Chart)
+        const monthlyProjectDatasets = projectData.projects.map((project, index) => ({
+            label: project,
+            data: projectData.hours[project],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'
+            ][index % 6],
+            borderColor: [
+                'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
+            ][index % 6],
+            borderWidth: 1
+        }));
+
+        new Chart(document.getElementById('projectHoursMonthlyChart'), {
+            type: 'bar', // Using bar for stacked
+            data: {
+                labels: projectData.months,
+                datasets: monthlyProjectDatasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Mês'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Horas Alocadas'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Desempenho Financeiro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e7ff;
+            padding-bottom: 15px;
+        }
+        h2 {
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 5px solid #a5b4fc;
+            padding-left: 10px;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #eef2ff;
+            color: #364d79;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .chart-container {
+            margin-top: 30px;
+            margin-bottom: 40px;
+            background: #fdfdfd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .chart-container canvas {
+            max-height: 400px;
+        }
+        .document-section {
+            border-top: 3px solid #60a5fa;
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análise de Desempenho Financeiro</h1>
+
+        <div class="document-section">
+            <h2>Desempenho Financeiro da MC (Relatório Anual 2024)</h2>
+            <p>Em 2024, a MC registou um sólido desempenho financeiro, com um volume de negócios de 7.619 milhões de euros, um aumento de 15,3% face a 2023. Excluindo o efeito da parceria com a Druni, o crescimento foi de 7,3%, com um crescimento "like-for-like" de 5,0%.</p>
+            <p>O setor de retalho alimentar em Portugal, onde a MC manteve a sua liderança, teve um crescimento robusto de 7,1% no volume de negócios total e 4,4% em vendas "like-for-like". A empresa expandiu a sua rede de lojas, com a abertura de 25 novas lojas e 24 remodelações, destacando a 200ª loja Continente Bom Dia.</p>
+            <p>O segmento de saúde, bem-estar e beleza (HWB) ultrapassou a marca de mil milhões de euros em volume de negócios. Mesmo excluindo a contribuição da Druni, este setor cresceu 9,8%, superando o mercado, e registou um crescimento "like-for-like" de 10,2%. A parceria com a Druni posicionou a MC como o player número 1 na Ibéria neste segmento.</p>
+            <p>A rentabilidade operacional (EBITDA) atingiu 767 milhões de euros, correspondendo a 10,1% do volume de negócios, um aumento de 0,4 pontos percentuais em relação a 2023. Excluindo a Druni, o EBITDA foi de 696 milhões de euros (9,8% do volume de negócios). A Druni contribuiu com 71 milhões de euros para a rentabilidade da MC.</p>
+            <p>O lucro líquido consolidado de operações contínuas atribuível aos acionistas foi de 189 milhões de euros, um aumento de 10,6% ano a ano.</p>
+            <p>O investimento operacional da MC totalizou 331 milhões de euros, focado em aberturas e remodelações de lojas (113 novas lojas operadas pela empresa, incluindo 25 de retalho alimentar e 42 de saúde, bem-estar e beleza). O CAPEX totalizou 597 milhões de euros, incluindo 266 milhões de euros na aquisição da participação no Grupo Druni.</p>
+            <p>A dívida financeira líquida totalizou 2.247 milhões de euros, com um rácio de dívida líquida total/EBITDA de 2,9x.</p>
+
+            <h3>Tabela de Dados Financeiros da MC (Relatório Anual 2024)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicador Financeiro</th>
+                        <th>Valor (2024)</th>
+                        <th>Variação vs. 2023</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Volume de Negócios Total</td><td>€7.619 milhões</td><td>+15,3%</td></tr>
+                    <tr><td>Volume de Negócios (Retalho Alimentar)</td><td>€6.488 milhões</td><td>+7,1%</td></tr>
+                    <tr><td>Volume de Negócios (Saúde, Bem-Estar e Beleza)</td><td>€1.132 milhões (excl. Druni: €1.015 milhões)</td><td>+9,8% (excl. Druni)</td></tr>
+                    <tr><td>Crescimento Like-for-Like Total</td><td>5,0%</td><td>N/A</td></tr>
+                    <tr><td>Crescimento Like-for-Like (Retalho Alimentar)</td><td>4,4%</td><td>N/A</td></tr>
+                    <tr><td>Crescimento Like-for-Like (Saúde, Bem-Estar e Beleza)</td><td>10,2%</td><td>N/A</td></tr>
+                    <tr><td>EBITDA Total</td><td>€767 milhões</td><td>+0,4 p.p. (10,1% do V.N.)</td></tr>
+                    <tr><td>EBITDA (Retalho Alimentar)</td><td>€625 milhões</td><td>9,6% do V.N.</td></tr>
+                    <tr><td>EBITDA (Saúde, Bem-Estar e Beleza)</td><td>€142 milhões</td><td>+2,0 p.p. (12,5% do V.N.)</td></tr>
+                    <tr><td>Contribuição Druni para EBITDA</td><td>€71 milhões</td><td>N/A</td></tr>
+                    <tr><td>Lucro Líquido (Atribuível aos Acionistas)</td><td>€189 milhões</td><td>+10,6%</td></tr>
+                    <tr><td>Investimento Operacional</td><td>€331 milhões</td><td>N/A</td></tr>
+                    <tr><td>CAPEX Total</td><td>€597 milhões</td><td>N/A</td></tr>
+                    <tr><td>Dívida Financeira Líquida Total</td><td>€2.247 milhões</td><td>N/A</td></tr>
+                    <tr><td>Rácio Dívida Líquida/EBITDA</td><td>2,9x</td><td>N/A</td></tr>
+                    <tr><td>Lojas Operadas pela Empresa</td><td>1.560</td><td>+466 (vs 2023: 1094)</td></tr>
+                    <tr><td>Lojas Franchisadas</td><td>358</td><td>+21 (vs 2023: 337)</td></tr>
+                    <tr><td>Área de Venda (Lojas Operadas)</td><td>1.029 mil m²</td><td>+148 mil m² (vs 2023: 881)</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Gráficos de Desempenho Financeiro da MC (Relatório Anual 2024)</h3>
+            <div class="chart-container">
+                <canvas id="mcTurnoverEBITDAChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="mcStoreNetworkChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="mcNetDebtChart"></canvas>
+            </div>
+        </div>
+
+        <div class="document-section">
+            <h2>Desempenho Financeiro da MC (Documento Sonae 2022)</h2>
+            <p>Em 2022, a MC registou um volume de negócios consolidado de 5.978 milhões de euros, representando um crescimento total anual de 11,5% e de 9,6% em base comparável de lojas. Este desempenho permitiu à MC reforçar a sua liderança no setor, com um aumento na quota de mercado.</p>
+            <p>As vendas online da empresa também apresentaram uma evolução positiva, crescendo 3,4% no ano e mais que duplicando os níveis pré-pandemia.</p>
+            <p>O EBITDA da MC em 2022 foi de 565 milhões de euros, correspondendo a uma margem de 9,5% do volume de negócios. A rentabilidade operacional foi impactada pelo "trading down", investimentos em preço para proteger os consumidores e aumentos consecutivos nos preços da energia, mas medidas de eficiência operacional ajudaram a mitigar estes desafios.</p>
+            <p>O resultado líquido de operações continuadas atingiu 179 milhões de euros, uma diminuição em comparação com os 218 milhões de euros de 2021, em parte devido a uma mais-valia extraordinária em 2021.</p>
+            <p>O investimento operacional totalizou 218 milhões de euros, destinado à expansão e modernização de lojas (65 novas lojas próprias, 33 remodelações) e ao desenvolvimento logístico e digital. A empresa terminou 2022 com 1.034 lojas próprias e 851 mil m² de área bruta de venda.</p>
+            <p>A posição financeira da MC manteve-se robusta, com um free cash-flow de 214 milhões de euros e um rácio de "cash conversion" de 57,1%. A dívida financeira líquida foi de 408 milhões de euros, com um rácio de dívida líquida total/EBITDA de 2,7x. A empresa também realizou operações de refinanciamento, com foco em dívida ESG-linked ou Green.</p>
+
+            <h3>Tabela de Dados Financeiros da MC (Documento Sonae 2022)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicador Financeiro</th>
+                        <th>Valor (2022)</th>
+                        <th>Variação vs. 2021</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Volume de Negócios Consolidado</td><td>€5.978 milhões</td><td>+11,5%</td></tr>
+                    <tr><td>Crescimento Like-for-Like</td><td>9,6%</td><td>N/A</td></tr>
+                    <tr><td>Crescimento Vendas Online</td><td>3,4%</td><td>N/A</td></tr>
+                    <tr><td>EBITDA</td><td>€565 milhões</td><td>9,5% (margem sobre V.N.)</td></tr>
+                    <tr><td>Resultado Líquido (Operações Continuadas)</td><td>€179 milhões</td><td>vs. €218 milhões em 2021</td></tr>
+                    <tr><td>Investimento Operacional</td><td>€218 milhões</td><td>N/A</td></tr>
+                    <tr><td>Lojas Próprias Abertas</td><td>65</td><td>N/A</td></tr>
+                    <tr><td>Lojas Remodeladas</td><td>33</td><td>N/A</td></tr>
+                    <tr><td>Total Lojas Próprias</td><td>1.034</td><td>N/A</td></tr>
+                    <tr><td>Área Bruta de Venda (Lojas Próprias)</td><td>851 mil m²</td><td>N/A</td></tr>
+                    <tr><td>Free Cash-Flow</td><td>€214 milhões</td><td>N/A</td></tr>
+                    <tr><td>Rácio Cash Conversion</td><td>57,1%</td><td>N/A</td></tr>
+                    <tr><td>Dívida Financeira Líquida</td><td>€408 milhões</td><td>vs. €379 milhões em 2021</td></tr>
+                    <tr><td>Rácio Dívida Líquida Total/EBITDA</td><td>2,7x</td><td>N/A</td></tr>
+                    <tr><td>Maturidade Média da Dívida</td><td>>4 anos</td><td>N/A</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Gráficos de Desempenho Financeiro da MC (Documento Sonae 2022)</h3>
+            <div class="chart-container">
+                <canvas id="sonaeFinancialPerformanceChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="sonaeStoresAreaChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for MC Annual Report 2024
+        const mc2024TurnoverTotal = 7619; // million €
+        const mc2023TurnoverTotal = mc2024TurnoverTotal / 1.153; // calculated from 15.3% growth
+        const mc2024TurnoverGrocery = 6488;
+        const mc2024TurnoverHWB = 1132;
+
+        const mc2024EBITDATotal = 767; // million €
+        const mc2023EBITDAMargin = 10.1 - 0.4; // 9.7%
+        const mc2023EBITDATotal = mc2023TurnoverTotal * (mc2023EBITDAMargin / 100); // calculated
+        const mc2024EBITDAGrocery = 625;
+        const mc2024EBITDAHWB = 142;
+
+        const mc2024NetIncome = 189; // million €
+        const mc2023NetIncome = mc2024NetIncome / 1.106; // calculated from 10.6% increase
+
+        const mc2023CompanyOperatedStores = 1094;
+        const mc2024CompanyOperatedStores = 1560;
+        const mc2023FranchisedStores = 337;
+        const mc2024FranchisedStores = 358;
+        const mc2023SalesArea = 881; // thousand sqm
+        const mc2024SalesArea = 1029; // thousand sqm
+
+        const mc2023NetDebt = 1452; // million €
+        const mc2024NetDebt = 2247; // million €
+
+        // Chart 1: Turnover and EBITDA (MC 2024)
+        new Chart(document.getElementById('mcTurnoverEBITDAChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'Retalho Alimentar', 'Saúde, Bem-Estar e Beleza'],
+                datasets: [
+                    {
+                        label: 'Volume de Negócios 2023 (€M)',
+                        data: [mc2023TurnoverTotal, NaN, NaN], // Only total available for 2023 from text
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Volume de Negócios 2024 (€M)',
+                        data: [mc2024TurnoverTotal, mc2024TurnoverGrocery, mc2024TurnoverHWB],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'EBITDA 2023 (€M)',
+                        data: [mc2023EBITDATotal, NaN, NaN], // Only total available for 2023 from text
+                        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'EBITDA 2024 (€M)',
+                        data: [mc2024EBITDATotal, mc2024EBITDAGrocery, mc2024EBITDAHWB],
+                        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Volume de Negócios e EBITDA da MC (2023 vs 2024)',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (€M)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Store Network and Sales Area (MC 2024)
+        new Chart(document.getElementById('mcStoreNetworkChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Lojas Operadas pela Empresa', 'Lojas Franchisadas', 'Área de Venda (mil m²)'],
+                datasets: [
+                    {
+                        label: '2023',
+                        data: [mc2023CompanyOperatedStores, mc2023FranchisedStores, mc2023SalesArea],
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2024',
+                        data: [mc2024CompanyOperatedStores, mc2024FranchisedStores, mc2024SalesArea],
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Rede de Lojas e Área de Venda da MC (2023 vs 2024)',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Lojas / Área (mil m²)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Net Debt Evolution (MC 2024)
+        new Chart(document.getElementById('mcNetDebtChart'), {
+            type: 'line',
+            data: {
+                labels: ['2023', '2024'],
+                datasets: [
+                    {
+                        label: 'Dívida Financeira Líquida (€M)',
+                        data: [mc2023NetDebt, mc2024NetDebt],
+                        backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Evolução da Dívida Financeira Líquida da MC (2023 vs 2024)',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Valor (€M)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Data for Sonae (Documento 2022)
+        const sonae2022Turnover = 5978; // million €
+        const sonae2021Turnover = sonae2022Turnover / 1.115; // calculated from 11.5% growth
+
+        const sonae2022EBITDA = 565; // million €
+
+        const sonae2022NetIncome = 179; // million €
+        const sonae2021NetIncome = 218; // million €
+
+        const sonae2022TotalStores = 1034;
+        const sonae2022SalesArea = 851; // thousand sqm
+
+        // Chart 4: Financial Performance (Sonae 2022)
+        new Chart(document.getElementById('sonaeFinancialPerformanceChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Volume de Negócios', 'EBITDA', 'Resultado Líquido'],
+                datasets: [
+                    {
+                        label: '2021 (€M)',
+                        data: [sonae2021Turnover, NaN, sonae2021NetIncome], // EBITDA not available for 2021 in this doc's narrative
+                        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2022 (€M)',
+                        data: [sonae2022Turnover, sonae2022EBITDA, sonae2022NetIncome],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Desempenho Financeiro da MC (2021 vs 2022)',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (€M)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 5: Stores and Sales Area (Sonae 2022)
+        new Chart(document.getElementById('sonaeStoresAreaChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Total Lojas Próprias (2022)', 'Área Bruta de Venda Lojas Próprias (mil m², 2022)'],
+                datasets: [
+                    {
+                        label: 'Indicadores Operacionais (2022)',
+                        data: [sonae2022TotalStores, sonae2022SalesArea],
+                        backgroundColor: [
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 99, 132, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Lojas Próprias e Área de Venda da MC (2022)',
+                        font: { size: 16 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + (context.label.includes('Lojas') ? ' unidades' : ' mil m²');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

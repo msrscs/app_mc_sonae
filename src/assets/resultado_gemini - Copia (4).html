@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto: Saúde e Bem-Estar</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .header img {
+            width: 30%;
+            height: auto;
+            margin-right: 20px;
+            max-width: 150px; /* Adjust max-width for better display on smaller screens */
+        }
+        .header h1 {
+            color: #0056b3;
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        h2, h3 {
+            color: #0056b3;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            font-size: 1.3em;
+            border-bottom: 1px solid #eee;
+        }
+        p, ul {
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden; /* Ensures border-radius applies to cells */
+        }
+        table thead th {
+            background-color: #0056b3;
+            color: #ffffff;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        table tbody td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        table tbody tr:hover {
+            background-color: #e2f2ff;
+        }
+        .chart-container {
+            width: 100%;
+            margin: 40px auto 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .chart-wrapper {
+            flex: 1 1 45%; /* Allows two charts per row, with some gap */
+            min-width: 350px; /* Minimum width for charts */
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.07);
+            height: 350px; /* Fixed height for consistency */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .chart-wrapper h3 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: none;
+            color: #333;
+        }
+        canvas {
+            max-height: 280px; /* Ensure canvas fits within wrapper */
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header img {
+                width: 40%;
+                margin-bottom: 15px;
+            }
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .container {
+                padding: 15px;
+            }
+            .chart-wrapper {
+                flex: 1 1 100%;
+                min-width: unset;
+                height: auto; /* Allow height to adjust on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="logo.png" alt="Logo MC">
+        <h1>Projeto: Saúde e Bem-Estar</h1>
+    </div>
+    <div class="container">
+        <h2>Documento: Relatório Anual MC 2024</h2>
+
+        <h3>Resumo Focado em Saúde e Bem-Estar</h3>
+        <p>O Relatório Anual de 2024 da MC destaca uma forte aposta e crescimento no segmento de Saúde, Bem-Estar e Beleza (HWB). Em 2024, a MC consolidou a sua posição como líder ibérica neste setor através da parceria estratégica com os acionistas fundadores da Druni, combinando as operações da Druni e Arenal. Esta aquisição elevou o volume de negócios da MC no setor HWB para 1,132 milhões de euros, representando aproximadamente 14,86% do volume de negócios total da empresa. O setor HWB demonstrou um crescimento robusto de 9,8% (excluindo o contributo da Druni) e um crescimento comparável (like-for-like) de 10,2%, superando o mercado. A MC expandiu significativamente a sua rede de lojas HWB, abrindo 42 novas lojas (20 Wells, 16 Druni e 6 Arenal) e ultrapassando as 300 lojas Wells em Portugal. A penetração das vendas online no segmento HWB ibérico excedeu os 10%. A empresa implementou inovações operacionais, como o novo modelo de checkout móvel da Druni, e lançou campanhas de sensibilização para a saúde da mulher através da marca Wells. O compromisso com a sustentabilidade também se reflete na oferta de produtos mais saudáveis e sustentáveis, com um aumento de 3,4 pontos percentuais na compra de carne certificada para bem-estar animal e pescado de fontes sustentáveis. Iniciativas de bem-estar dos colaboradores e apoio a comunidades também foram implementadas, com programas de saúde mental e atividades de promoção da saúde.</p>
+
+        <h3>Pontos-Chave</h3>
+        <ul>
+            <li><strong>Liderança Ibérica em HWB:</strong> Em 2024, a MC tornou-se a líder ibérica no retalho especializado em saúde, bem-estar e beleza, através da parceria estratégica e integração da Druni e Arenal, consolidando uma rede de mais de 750 lojas.</li>
+            <li><strong>Performance Financeira Robusta:</strong> O setor HWB alcançou um volume de negócios de 1,132 milhões de euros, contribuindo com 14,86% do volume de negócios total da MC. Registou um crescimento total de 9,8% (excluindo Druni) e um crescimento comparável de 10,2%, com um EBITDA de 142 milhões de euros, representando 12,5% do volume de negócios do setor.</li>
+            <li><strong>Expansão da Rede e Digitalização:</strong> A rede de lojas HWB expandiu-se com 42 novas aberturas (20 Wells, 16 Druni, 6 Arenal), totalizando 795 lojas próprias. A penetração online do segmento HWB na Ibéria excedeu 10%, com a Druni a atingir mais de 11% de penetração nas suas vendas online.</li>
+            <li><strong>Inovação Operacional e Experiência do Cliente:</strong> A Druni implementou um novo modelo de checkout móvel para uma experiência de compra mais ágil. A Wells foi reconhecida como a "Melhor Marca de Óticas" em Portugal pelo segundo ano consecutivo e lançou a campanha 'Não Fica Bem', abordando o bem-estar feminino em várias fases da vida.</li>
+            <li><strong>Foco na Sustentabilidade e Bem-Estar:</strong> Houve um aumento de 3,4 pontos percentuais no volume de compras de carne com certificação de bem-estar animal. A MC implementou o programa de saúde mental 'Precisamos Falar' para os seus colaboradores e continuou o apoio a comunidades com iniciativas como a Missão Continente e a promoção do desporto com a Footparks.</li>
+        </ul>
+
+        <h3>Tabela de Dados (Saúde e Bem-Estar)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Valor (2024)</th>
+                    <th>Unidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Volume de Negócios HWB</td><td>1,132</td><td>€M</td></tr>
+                <tr><td>Crescimento Total HWB (excl. Druni)</td><td>9.8</td><td>%</td></tr>
+                <tr><td>Crescimento Like-for-like HWB</td><td>10.2</td><td>%</td></tr>
+                <tr><td>EBITDA HWB</td><td>142</td><td>€M</td></tr>
+                <tr><td>EBITDA HWB (% do Volume de Negócios do setor)</td><td>12.5</td><td>%</td></tr>
+                <tr><td>Número de Lojas Wells</td><td>303</td><td>Lojas</td></tr>
+                <tr><td>Número de Lojas Arenal</td><td>76</td><td>Lojas</td></tr>
+                <tr><td>Número de Lojas Druni</td><td>416</td><td>Lojas</td></tr>
+                <tr><td>Penetração Online HWB (Ibérica)</td><td>>10</td><td>%</td></tr>
+                <tr><td>Penetração Online Druni</td><td>>11</td><td>%</td></tr>
+                <tr><td>Novas Lojas HWB abertas em 2024</td><td>42</td><td>Lojas</td></tr>
+                <tr><td>Aumento % volume carne bem-estar animal</td><td>3.4</td><td>pp</td></tr>
+            </tbody>
+        </table>
+
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <h3>Performance Financeira HWB (2024)</h3>
+                <canvas id="hwbFinancialChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <h3>Distribuição de Lojas HWB por Marca (2024)</h3>
+                <canvas id="hwbStoresChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart 1: HWB Financial Performance
+            const hwbFinancialCtx = document.getElementById('hwbFinancialChart').getContext('2d');
+            new Chart(hwbFinancialCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Volume de Negócios HWB (€M)', 'EBITDA HWB (€M)', 'EBITDA HWB (% do Volume de Negócios do setor)'],
+                    datasets: [{
+                        label: 'Valores 2024',
+                        data: [1132, 142, 12.5],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Valor'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataIndex === 2) { // EBITDA HWB (% of turnover)
+                                            label += context.parsed.y + '%';
+                                        } else {
+                                            label += '€' + context.parsed.y + 'M';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: HWB Stores Distribution
+            const hwbStoresCtx = document.getElementById('hwbStoresChart').getContext('2d');
+            new Chart(hwbStoresCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Wells', 'Arenal', 'Druni'],
+                    datasets: [{
+                        label: 'Número de Lojas',
+                        data: [303, 76, 416],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed;
+                                    }
+                                    return label + ' lojas';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

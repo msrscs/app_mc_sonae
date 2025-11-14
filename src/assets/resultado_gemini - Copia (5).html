@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Projeto: Saúde e Bem-Estar (HWB)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+        .header img {
+            width: 30%;
+            height: auto;
+            margin-right: 20px;
+            align-self: flex-start; /* Align image to the top-left */
+        }
+        h1 {
+            color: #2c3e50;
+            margin: 0; /* Remove default margin to align with image */
+            padding-left: 10px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+            gap: 20px;
+            justify-content: center; /* Center grid items */
+        }
+        .grid-item {
+            background-color: #fdfdfd;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content within grid item */
+        }
+        .grid-item h3 {
+            text-align: center;
+            width: 100%;
+        }
+        .chart-canvas-wrapper {
+            width: 100%;
+            max-width: 500px; /* Limit chart size for better readability */
+            height: auto;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header img {
+                width: 50%;
+                margin-bottom: 15px;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .chart-container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo.png" alt="MC Logo">
+            <h1>Dashboard do Projeto: Saúde e Bem-Estar (HWB)</h1>
+        </div>
+
+        <div class="section">
+            <h2>Visão Geral do Projeto "Saúde e Bem-Estar" (HWB)</h2>
+            <p>O projeto "Saúde e Bem-Estar" (Health, Wellness and Beauty - HWB) representa uma área estratégica de crescimento acelerado para a MC. Em 2024, a MC consolidou sua posição como líder ibérica neste segmento através de uma parceria estratégica com os acionistas fundadores da Druni. Esta iniciativa marcou uma importante etapa na diversificação e fortalecimento do ecossistema de retalho da empresa, transformando a MC num verdadeiro líder de retalho ibérico, com excelência em mercearia e em saúde, bem-estar e beleza. O segmento HWB representou, em 2024, mais de um quinto das vendas totais da empresa.</p>
+            <h3>Tabela de Informações Gerais - HWB 2024</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor (2024)</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Posição de Liderança</td>
+                        <td>Líder Ibérico</td>
+                        <td>No retalho especializado em saúde, bem-estar e beleza</td>
+                    </tr>
+                    <tr>
+                        <td>Contribuição para Vendas Totais</td>
+                        <td>Mais de 1/5</td>
+                        <td>Do volume de negócios total da MC</td>
+                    </tr>
+                    <tr>
+                        <td>Parceria Estratégica</td>
+                        <td>Druni</td>
+                        <td>Consolidou a MC como o jogador #1 na Ibéria</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Desempenho Financeiro HWB (2024)</h2>
+            <p>Em 2024, o segmento de Saúde e Bem-Estar da MC alcançou um marco significativo, superando o volume de negócios de mil milhões de euros. O desempenho foi impulsionado por um crescimento robusto e pela aquisição estratégica, com a integração da Druni. A rentabilidade operacional do segmento também demonstrou uma melhoria notável.</p>
+            <h3>Tabela de Desempenho Financeiro HWB (2024)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor (2024)</th>
+                        <th>Notas de Variação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Volume de Negócios (Faturamento) HWB</td>
+                        <td>€1.132 milhões</td>
+                        <td>Crescimento de 9.8% (excluindo Druni) comparado a 2023. INFORMAÇÃO NÃO PROCESSADA para Volume de Negócios HWB 2023.</td>
+                    </tr>
+                    <tr>
+                        <td>Crescimento "Like-for-like" HWB</td>
+                        <td>10.2%</td>
+                        <td>INFORMAÇÃO NÃO PROCESSADA para 2023.</td>
+                    </tr>
+                    <tr>
+                        <td>EBITDA HWB</td>
+                        <td>€142 milhões</td>
+                        <td>A integração da Druni contribuiu com €71 milhões para a rentabilidade da MC. INFORMAÇÃO NÃO PROCESSADA para EBITDA HWB 2023.</td>
+                    </tr>
+                    <tr>
+                        <td>EBITDA HWB (% do Volume de Negócios)</td>
+                        <td>12.5%</td>
+                        <td>Aumento de 2.0 pp comparado a 2023.</td>
+                    </tr>
+                    <tr>
+                        <td>Investimento na Aquisição da Druni (inicial)</td>
+                        <td>€230 milhões</td>
+                        <td>Inclui aquisição de participação no Druni Group e nos 40% restantes da Arenal.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <h3>Volume de Negócios HWB (2024)</h3>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="hwbTurnoverChart"></canvas>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <h3>EBITDA HWB e % do Volume de Negócios (2024)</h3>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="hwbEBITDAChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Destaques Operacionais HWB (2024)</h2>
+            <p>O ano de 2024 foi marcado por avanços significativos nas operações do segmento HWB, com a consolidação da liderança ibérica e a expansão da rede de lojas, bem como o reconhecimento da qualidade das marcas.</p>
+            <h3>Tabela de Destaques Operacionais HWB (2024)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Destaque</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Liderança Ibérica</td>
+                        <td>MC tornou-se líder no retalho especializado em saúde, bem-estar e beleza na Península Ibérica com a inclusão da Druni.</td>
+                    </tr>
+                    <tr>
+                        <td>Inovação Druni</td>
+                        <td>Implementação de um novo modelo de checkout com dispositivos móveis, para uma experiência de cliente mais ágil e rápida.</td>
+                    </tr>
+                    <tr>
+                        <td>Reconhecimento Wells</td>
+                        <td>Pelo segundo ano consecutivo, a Wells recebeu o "Consumer Choice Award" para Melhor Ótica em Portugal.</td>
+                    </tr>
+                    <tr>
+                        <td>Expansão Wells</td>
+                        <td>Wells superou o marco de 300 lojas em Portugal, e a bandeira Wells Opticians ultrapassou 20 lojas autónomas em 2024.</td>
+                    </tr>
+                    <tr>
+                        <td>Crescimento Online Druni</td>
+                        <td>Penetração de vendas online da Druni acima de 11% no final de 2024, impulsionada pelo lançamento da plataforma em Portugal.</td>
+                    </tr>
+                    <tr>
+                        <td>Campanha da Marca Wells</td>
+                        <td>Lançamento da campanha "Não Fica Bem", abordando questões importantes sobre o bem-estar da mulher através de diversas fases da vida.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Portfólio de Lojas HWB (2024)</h2>
+            <p>O portfólio de HWB da MC abrange diversas marcas e formatos, garantindo uma cobertura abrangente na Península Ibérica. As marcas Wells, Arenal e Druni são os pilares deste segmento, com uma forte presença física e operações online significativas.</p>
+            <h3>Tabela do Portfólio de Lojas HWB (2024)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Marca</th>
+                        <th>Número de Lojas</th>
+                        <th>Região</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wells</td>
+                        <td>303</td>
+                        <td>Portugal</td>
+                    </tr>
+                    <tr>
+                        <td>Arenal</td>
+                        <td>76</td>
+                        <td>Espanha</td>
+                    </tr>
+                    <tr>
+                        <td>Druni</td>
+                        <td>416</td>
+                        <td>Espanha</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Lojas HWB (2024)</td>
+                        <td>795</td>
+                        <td>Península Ibérica</td>
+                    </tr>
+                    <tr>
+                        <td>Novas Lojas HWB (2024)</td>
+                        <td>42</td>
+                        <td>20 Wells, 16 Druni, 6 Arenal</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="chart-container">
+                <h3>Distribuição de Lojas HWB por Marca (2024)</h3>
+                <div class="chart-canvas-wrapper">
+                    <canvas id="hwbStoresChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Tendências e Desafios do Setor HWB (2024)</h2>
+            <p>O setor de saúde, bem-estar e beleza na Ibéria em 2024 experimentou um crescimento moderado, influenciado por mudanças nas preferências dos consumidores, aumento da digitalização e preocupações com a sustentabilidade. A demanda por produtos HWB manteve-se alta, especialmente em Portugal, impulsionada por consumidores conscientes e uma população envelhecida.</p>
+            <h3>Tabela de Tendências e Desafios HWB (2024)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Crescimento do Setor</td>
+                        <td>Crescimento moderado na Península Ibérica, com a Espanha a crescer ligeiramente mais rápido que Portugal.</td>
+                    </tr>
+                    <tr>
+                        <td>Comportamento do Consumidor</td>
+                        <td>Alta demanda por produtos HWB (Portugal) devido a consumidores conscientes e população envelhecida. Priorização de estilos de vida mais saudáveis e bem-estar.</td>
+                    </tr>
+                    <tr>
+                        <td>Digitalização</td>
+                        <td>Aumento das vendas online e investimento em estratégias omnicanal pelos retalhistas em ambas as regiões.</td>
+                    </tr>
+                    <tr>
+                        <td>Desafios</td>
+                        <td>Forte concorrência de marcas internacionais.</td>
+                    </tr>
+                    <tr>
+                        <td>Oportunidades</td>
+                        <td>Mudanças comportamentais dos consumidores em direção ao bem-estar e à integração de soluções tecnológicas (IA, RA, consultas digitais de saúde).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Prioridades Estratégicas HWB (2025)</h2>
+            <p>Para 2025, a MC delineou prioridades claras para o segmento HWB, focando na expansão, inovação e consolidação de sua presença ibérica e oferta digital, visando aprimorar a proposta de valor para o cliente.</p>
+            <h3>Tabela de Prioridades Estratégicas HWB</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Prioridade</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Inovação e Rede de Lojas</td>
+                        <td>Reforçar e inovar a rede de lojas, adicionando novos conceitos como Ópticas ou Beleza que respondam a necessidades específicas do cliente.</td>
+                    </tr>
+                    <tr>
+                        <td>Proposição de Valor E-commerce</td>
+                        <td>Melhorar a proposta de valor do e-commerce para proporcionar experiências de compra online mais convenientes e inovadoras.</td>
+                    </tr>
+                    <tr>
+                        <td>Expansão Ibérica</td>
+                        <td>Consolidar e expandir a presença ibérica através de uma expansão sustentada da rede de lojas e operação de e-commerce das marcas Wells, Arenal e Druni.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // Chart for HWB Turnover
+        const hwbTurnoverCtx = document.getElementById('hwbTurnoverChart').getContext('2d');
+        new Chart(hwbTurnoverCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Volume de Negócios HWB'],
+                datasets: [{
+                    label: 'Volume de Negócios (€ Milhões)',
+                    data: [1132],
+                    backgroundColor: ['#4CAF50'],
+                    borderColor: ['#388E3C'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Volume de Negócios HWB em 2024',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: function() {
+                                return 'Crescimento de 9.8% (excluindo Druni) vs. 2023';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (€ Milhões)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for HWB EBITDA
+        const hwbEBITDACtx = document.getElementById('hwbEBITDAChart').getContext('2d');
+        new Chart(hwbEBITDACtx, {
+            type: 'bar',
+            data: {
+                labels: ['EBITDA HWB (€ Milhões)', 'EBITDA HWB (% do Volume de Negócios)'],
+                datasets: [{
+                    label: 'Valor',
+                    data: [142, 12.5],
+                    backgroundColor: ['#2196F3', '#FFC107'],
+                    borderColor: ['#1976D2', '#FFA000'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'EBITDA HWB em 2024',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: function(context) {
+                                if (context[0].label === 'EBITDA HWB (% do Volume de Negócios)') {
+                                    return 'Aumento de 2.0 pp vs. 2023';
+                                } else if (context[0].label === 'EBITDA HWB (€ Milhões)') {
+                                    return 'Druni contribuiu com €71 milhões';
+                                }
+                                return '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (€ Milhões / %)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for HWB Stores by Brand
+        const hwbStoresCtx = document.getElementById('hwbStoresChart').getContext('2d');
+        new Chart(hwbStoresCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Wells', 'Arenal', 'Druni'],
+                datasets: [{
+                    label: 'Número de Lojas',
+                    data: [303, 76, 416],
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56'
+                    ],
+                    hoverBackgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribuição de Lojas HWB por Marca (2024)',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

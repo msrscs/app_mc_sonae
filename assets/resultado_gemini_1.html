@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo do Projeto: Teste 1</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #3498db;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 25px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .data-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 600px; /* Adjust as needed */
+            margin: 25px auto;
+            padding: 15px;
+            background: #fdfdfd;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+        }
+        @media (min-width: 768px) {
+            .chart-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Projeto: 13 - Teste 1</h1>
+
+        <div class="section">
+            <h2>Resumo Geral</h2>
+            <p>Este documento detalha o planejamento e orçamento do Projeto 13 - Teste 1, envolvendo a Sonae e seus departamentos E-commerce, BIT e Inovação. O projeto abrange diversas Work Packages (WPs), desde gestão de projetos e inovação até requisitos de ecossistema de identidade, fortalecimento tecnológico, integração de demonstradores, comunicação e disseminação. O esforço total alocado é de <strong>12 Man-Months (MM)</strong>, com um custo total estimado em <strong>122.500,00 €</strong>.</p>
+        </div>
+
+        <div class="section">
+            <h2>Alocação de Mão de Obra (Man-Months - MM)</h2>
+            <p>A alocação de Man-Months (MM) para o projeto é distribuída entre a Sonae e seus departamentos, bem como pelas Work Packages (WPs) específicas do projeto. A Sonae aloca um total de 12 MM, com o E-commerce contribuindo com 5.75 MM, o BIT com 3.5 MM e Inovação com 2.75 MM.</p>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <h3>Total de Man-Months por Departamento</h3>
+                    <canvas id="mmDistributionPerDepartment"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Distribuição de Man-Months por Work Package (Sonae Total)</h3>
+                    <canvas id="mmDistributionPerWP"></canvas>
+                </div>
+            </div>
+
+            <h3>Detalhes da Alocação de Mão de Obra (MM)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Workpackages & Activities</th>
+                        <th>Sonae (Total) (MM)</th>
+                        <th>E-commerce (MM)</th>
+                        <th>BIT (MM)</th>
+                        <th>Inovação (MM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Project and Innovation Management</td><td>0.5</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>0.5</td></tr>
+                    <tr><td>Task 1.4 - Project reporting</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Procedural, ethical, legal & societal requirements for ID ecosystem</td><td>3</td><td>2</td><td>1</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>T2.1 - Functional requirements for ID ecosystem</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>T2.2 – Societal and Ethics Evaluation of ID and threats</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Strengthening the technology for ID</td><td>0</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Demonstrators integration & evaluation</td><td>5</td><td>2</td><td>2.5</td><td>0.5</td></tr>
+                    <tr><td>Task 4.2 - Prototype Demonstration and Evaluation Plan</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Task 4.3 - Secure eCommerce prototype demonstrator</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Task 4.5 - Evaluation and Validation</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Design, communication and exploitation of ecosystem for identity services</td><td>2</td><td>1.25</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>0.75</td></tr>
+                    <tr><td>Task 5.2 - Exploitation Plan and Report</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Task 5.3 - Communication activities & Public Web Presence</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr><td>Dissemination and Standardization</td><td>1.5</td><td>0.5</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>1</td></tr>
+                    <tr><td>Task 6.1 - Engaging scientific and technical community: Dissemination</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td><td>INFORMAÇÃO NÃO PROCESSADA</td></tr>
+                    <tr style="font-weight: bold;"><td>Total MM</td><td>12</td><td>5.75</td><td>3.5</td><td>2.75</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Orçamento do Projeto</h2>
+            <p>O orçamento total do projeto é de <strong>122.500,00 €</strong>, dividido entre custos de pessoal direto, viagens, outras despesas específicas e custos indiretos. O departamento E-commerce detém a maior parte do custo total.</p>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <h3>Custo Total por Departamento (€)</h3>
+                    <canvas id="totalCostPerDepartment"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Detalhamento de Custos da SONAE (Total) (€)</h3>
+                    <canvas id="sonaeCostBreakdown"></canvas>
+                </div>
+            </div>
+
+            <h3>Detalhes do Orçamento</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Categoria de Custo</th>
+                        <th>Sonae (Total) (€)</th>
+                        <th>E-commerce (€)</th>
+                        <th>BIT (€)</th>
+                        <th>Inovação (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Custo de Pessoal (direto, baseado em MM)</td><td>78000</td><td>37375</td><td>22750</td><td>17875</td></tr>
+                    <tr><td>Viagens</td><td>12000</td><td>6000</td><td>0</td><td>6000</td></tr>
+                    <tr><td>Outros (Organização de Workshop)</td><td>8000</td><td>4000</td><td>0</td><td>4000</td></tr>
+                    <tr><td>Custos Indiretos (25%)</td><td>24500</td><td>11843.75</td><td>5687.5</td><td>6968.75</td></tr>
+                    <tr style="font-weight: bold;"><td>Total</td><td>122500</td><td>59218.75</td><td>28437.5</td><td>34843.75</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Justificativa de Custos da SONAE</h2>
+            <p>A SONAE justificou seus custos com as seguintes atividades:</p>
+            <ul>
+                <li>Viagens e acomodação para 12 reuniões (1 revisão anual + 2 reuniões da Assembleia Geral + 1 conferência/workshop) por ano.</li>
+                <li>Organização de um workshop prático para tecnologias potenciais ARIES.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart 1a: Total Man-Months per Department
+            const mmDistributionPerDepartmentCtx = document.getElementById('mmDistributionPerDepartment').getContext('2d');
+            new Chart(mmDistributionPerDepartmentCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sonae (Total)', 'E-commerce', 'BIT', 'Inovação'],
+                    datasets: [{
+                        label: 'Man-Months (MM)',
+                        data: [12, 5.75, 3.5, 2.75],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)', // Blue
+                            'rgba(46, 204, 113, 0.7)', // Green
+                            'rgba(241, 196, 15, 0.7)', // Yellow
+                            'rgba(231, 76, 60, 0.7)'   // Red
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(231, 76, 60, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Man-Months'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + ' MM';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 1b: Man-Months Distribution per Work Package (Sonae Total)
+            const mmDistributionPerWPCtx = document.getElementById('mmDistributionPerWP').getContext('2d');
+            new Chart(mmDistributionPerWPCtx, {
+                type: 'pie',
+                data: {
+                    labels: [
+                        'Project and Innovation Management',
+                        'Procedural, ethical, legal & societal requirements for ID ecosystem',
+                        'Demonstrators integration & evaluation',
+                        'Design, communication and exploitation of ecosystem for identity services',
+                        'Dissemination and Standardization'
+                    ],
+                    datasets: [{
+                        label: 'Man-Months (MM)',
+                        data: [0.5, 3, 5, 2, 1.5], // Corresponding data, excluding 0 MM
+                        backgroundColor: [
+                            'rgba(155, 89, 182, 0.7)', // Purple
+                            'rgba(52, 152, 219, 0.7)', // Blue
+                            'rgba(241, 196, 15, 0.7)', // Yellow
+                            'rgba(46, 204, 113, 0.7)', // Green
+                            'rgba(230, 126, 34, 0.7)'  // Orange
+                        ],
+                        borderColor: [
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(230, 126, 34, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' MM';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2a: Total Cost per Department
+            const totalCostPerDepartmentCtx = document.getElementById('totalCostPerDepartment').getContext('2d');
+            new Chart(totalCostPerDepartmentCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sonae (Total)', 'E-commerce', 'BIT', 'Inovação'],
+                    datasets: [{
+                        label: 'Custo Total (€)',
+                        data: [122500, 59218.75, 28437.5, 34843.75],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)', // Blue
+                            'rgba(46, 204, 113, 0.7)', // Green
+                            'rgba(241, 196, 15, 0.7)', // Yellow
+                            'rgba(231, 76, 60, 0.7)'   // Red
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(231, 76, 60, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Custo (€)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'EUR' });
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw.toLocaleString('pt-BR', { style: 'currency', currency: 'EUR' });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2b: Sonae Total Cost Breakdown
+            const sonaeCostBreakdownCtx = document.getElementById('sonaeCostBreakdown').getContext('2d');
+            new Chart(sonaeCostBreakdownCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Custo de Pessoal (direto)', 'Viagens', 'Outros (Workshop)', 'Custos Indiretos (25%)'],
+                    datasets: [{
+                        label: 'Custo Total da Sonae (€)',
+                        data: [78000, 12000, 8000, 24500],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)', // Blue
+                            'rgba(46, 204, 113, 0.7)', // Green
+                            'rgba(241, 196, 15, 0.7)', // Yellow
+                            'rgba(155, 89, 182, 0.7)'  // Purple
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(155, 89, 182, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toLocaleString('pt-BR', { style: 'currency', currency: 'EUR' });
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

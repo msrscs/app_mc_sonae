@@ -57,15 +57,23 @@
             pip install flet
           Para criar um app Flet do zero:
             flet create
-        + Flet Webview
-            pip install flet-webview  
         + Dotenv (Ambiente variáveis - Lê pares de valores-chave de um arquivo .env)
             pip install python-dotenv
         + PyJWT (JSON Web Token)
             pip install PyJWT
         + Docling
             pip install docling
-    
+        + API Gemini
+            pip install -q -U google-genai
+
+# Chave API Gemini
+    - Criar a chave API:
+        https://aistudio.google.com/   
+    - Verificar o limite de requisições da API:
+        https://ai.google.dev/gemini-api/docs/rate-limits?hl=pt-br#free-tier 
+    - Verificar Status do Serviço:
+        https://status.cloud.google.com/
+        
 # Arquivos Python
     - app_mcsonae.py            => Arquivo main da App MC Sonae
     - utilidades.py             => Arquivo de Utilidades 
@@ -75,6 +83,8 @@
         export FLET_SECRET_KEY="$2b$12$lEqyKxLYq5QQFjC5XF/uke1VfU1VKwI/DIlraQAAuJsK29hinWEOe"
     Windows:
         set FLET_SECRET_KEY=$2b$12$lEqyKxLYq5QQFjC5XF/uke1VfU1VKwI/DIlraQAAuJsK29hinWEOe
+    clear ; python -u "m:\Python\p2_mc_sonae\app_mcsonae\src\app_mcsonae.py"
+    
     flet run app_mcsonae.py --web
 
 # CUDA 
@@ -89,3 +99,9 @@
     - Testes:
         python -c "import torch; print(torch.__version__)"
         python -c "from docling.document_converter import DocumentConverter; print('Docling OK!')"
+
+# Web Server
+    - Criar Web Server da pasta assets
+
+# Data da Versão
+    14/11/2025

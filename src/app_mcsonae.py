@@ -17,7 +17,7 @@
 #           Mauro Sérgio Rezende da Silva               #
 #           Silvio Barros Tenório                       #
 # Versão: 1.0                                           #
-# Data: 01/11/2025                                      #
+# Data: 14/11/2025                                      #
 ######################################################### 
 
 import jwt # Adicionado para decodificar JWTs
@@ -29,8 +29,12 @@ from dotenv import load_dotenv
 from zoneinfo import ZoneInfo # Adicionado para conversão de fuso horário
 import os
 import re
+import random
 from utilidades import gerar_senha_forte, envia_email
 from docling.document_converter import DocumentConverter
+from google import genai
+# import urllib.parse
+import base64
 
 ##################################################
 # Carrega Variaveis de Ambiente
@@ -41,6 +45,7 @@ CHAVE_API_GEMINI = os.getenv('CHAVE_API_GEMINI')
 CHAVE_API_BREVO  = os.getenv('CHAVE_API_BREVO')
 URL_API_MCSONAE = os.getenv('URL_API_MCSONAE')
 FLET_SECRET_KEY = os.getenv('FLET_SECRET_KEY')
+SERVIDOR_WEB = os.getenv('SERVIDOR_WEB')
 
 ##################################################
 # Paleta de Cores
@@ -428,7 +433,7 @@ class ApiClient:
         except httpx.RequestError as e:
             return False, f"Erro de conexão: {e}"
 
-    # Cria um arquvivo no repositório do projeto.
+    # Cria um arquivo no repositório do projeto.
     def create_repositorio(self, repositorio_data: dict) -> tuple[bool, str]:
         auth_client = self.get_authenticated_client()
         if not auth_client:
@@ -443,6 +448,79 @@ class ApiClient:
         except httpx.RequestError as e:
             return False, f"Erro de conexão: {e}"
 
+    # Busca a lista de projetos do endpoint GET /repositorio/.
+    def get_repositorios(self, search_term: int = 0) -> Optional[list]:
+        auth_client = self.get_authenticated_client()
+        if not auth_client:
+            return None
+        
+        try:
+            params = {}
+            if search_term is None:
+                search_term = 0
+            params["filtro"] = search_term
+            response = auth_client.get("/repositorio/", params=params)
+            response.raise_for_status()
+            return response.json()
+        except httpx.HTTPStatusError as e:
+            print(f"Erro ao buscar repositorios: {e}")
+            if e.response.status_code == 401:
+                self.page.go("/login") # Token inválido ou expirado
+            return None
+        except httpx.RequestError as e:
+            print(f"Erro de conexão: {e}")
+            return None
+
+    # Deleta um repositório.
+    def delete_repositorio(self, repositorio_id: int) -> tuple[bool, str]:
+        auth_client = self.get_authenticated_client()
+        if not auth_client:
+            return False, "Não autenticado."
+        
+        try:
+            response = auth_client.delete(f"/repositorio/{repositorio_id}")
+            response.raise_for_status()
+            return True, "Repositório deletado com sucesso!"
+        except httpx.HTTPStatusError as e:
+            return False, f"Erro ao deletar repositório: {e.response.text}"
+        except httpx.RequestError as e:
+            return False, f"Erro de conexão: {e}"
+
+    # Busca um prompt usuario pelo ID.
+    def get_prompt_usuario(self, limit: int = 1000) -> Optional[list]:
+        auth_client = self.get_authenticated_client()
+        if not auth_client:
+            return None
+        
+        try:
+            params = {}
+            params["limit"] = limit
+            response = auth_client.get("/promptusuario/", params=params)
+            response.raise_for_status()
+            return response.json()
+        except httpx.HTTPStatusError as e:
+            print(f"Erro ao buscar prompt usuário: {e}")
+            if e.response.status_code == 401:
+                self.page.go("/login") # Token inválido ou expirado
+            return None
+        except httpx.RequestError as e:
+            print(f"Erro de conexão: {e}")
+            return None
+
+    # Cria um arquvivo no repositório do projeto.
+    def create_prompt_usuario(self, prompt_data: dict) -> tuple[bool, str]:
+        auth_client = self.get_authenticated_client()
+        if not auth_client:
+            return False, "Não autenticado."
+        
+        try:
+            response = auth_client.post("/promptusuario/", json=prompt_data)
+            response.raise_for_status()
+            return True, "Prompt do usuário criado  com sucesso!"
+        except httpx.HTTPStatusError as e:
+            return False, f"Erro ao criar prompt do usuário: {e.response.text}"
+        except httpx.RequestError as e:
+            return False, f"Erro de conexão: {e}"
 
 ##################################################
 # Definição das Telas (Views)
@@ -793,7 +871,7 @@ def view_usuarios_list(page: ft.Page, api: ApiClient) -> ft.View:
         if term:
             page.go(f"/usuarios/?filtro={term}")
         else:
-            page.go("/usuarios/")
+            page.go(f"/usuarios/")
     
     def criar_celula(conteudo, largura=None, alinhamento=ft.alignment.center_left):
         return ft.Container(
@@ -1466,7 +1544,7 @@ def view_promtgeral_form(page: ft.Page, api: ApiClient, prompt_id: int) -> ft.Vi
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
 
-# Renderiza a tela de detalhes de um usuário.
+# Renderiza a tela de detalhes de um projeto.
 def view_projeto_detail(page: ft.Page, api: ApiClient, projeto_id: int) -> ft.View:
     pj = api.get_projeto_by_id(projeto_id)
 
@@ -1490,6 +1568,227 @@ def view_projeto_detail(page: ft.Page, api: ApiClient, projeto_id: int) -> ft.Vi
     ]
     details = ft.Column(spacing=10, alignment=ft.MainAxisAlignment.CENTER, controls=detailsa)
 
+    # ### Repositório
+    search_term = pj.get('projetoid')
+    search_term = search_term if search_term is not None else 0
+    rep_data = api.get_repositorios(search_term=search_term) # type: ignore
+
+    # Cria o controle Markdown que será atualizado e exibido no diálogo.
+    markdown_content_control = ft.Markdown(
+        "",
+        selectable=True,
+        extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
+        on_tap_link=lambda e: page.launch_url(e.data),  # type: ignore
+    )
+
+    # Cria uma instância do AlertDialog para visualizar o Markdown.
+    markdown_view_dialog = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Conteúdo do Repositório"),
+        content=ft.Container(
+            content=ft.Column([markdown_content_control], scroll=ft.ScrollMode.AUTO, expand=True),
+            width=800,
+            height=600,
+        ),
+        actions=[ft.TextButton("Fechar", style=button_style, on_click=lambda _: close_markdown_dialog(markdown_view_dialog))],
+        actions_alignment=ft.MainAxisAlignment.END,
+    )
+
+    # Cria uma instância do AlertDialog que será reutilizada.
+    delete_rep_dialog = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Confirma Apagar"),
+        content=ft.Text(""),
+        actions=[
+            ft.TextButton("Cancelar", on_click=lambda _: close_rep_dialog()),
+            ft.FilledButton("Apagar", style=button_style,on_click=lambda _: ...), # O on_click será atualizado dinamicamente
+        ],
+        actions_alignment=ft.MainAxisAlignment.END,
+    )
+
+    # Adiciona o diálogo à camada de sobreposição da página.
+    page.overlay.append(delete_rep_dialog)
+    page.overlay.append(markdown_view_dialog)
+    
+    def open_delete_rep_dialog(rep_to_delete):
+        def on_delete_rep_confirm(e):
+            success, message = api.delete_repositorio(rep_to_delete.get("repositorioid"))
+            if success:
+                show_snackbar(page, message, ft.Colors.GREEN)
+                search_rep() # Chama a função de pesquisa para recarregar a lista
+            else:
+                show_snackbar(page, message, ft.Colors.RED)
+            delete_rep_dialog.open = False
+            page.update()
+        
+        # Atualiza o conteúdo e as ações do diálogo existente
+        delete_rep_dialog.content = ft.Text(f"Tem certeza que deseja apagar o repositório {rep_to_delete.get('repositorioid')}?")
+        delete_rep_dialog.actions[1].on_click = on_delete_rep_confirm # type: ignore
+        delete_rep_dialog.open = True
+        page.update()
+
+    def close_rep_dialog():
+        delete_rep_dialog.open = False
+        page.update()
+
+    def open_markdown_dialog(rep_item):
+        # Atualiza o conteúdo do controle Markdown e abre o diálogo.
+        markdown_content_control.value = rep_item.get("markdown", "### Nenhum conteúdo para exibir.")
+        markdown_view_dialog.content.update() # type: ignore
+        markdown_view_dialog.open = True
+        markdown_view_dialog.update() # Atualiza apenas o diálogo (para abrir)
+
+    def close_markdown_dialog(dialog: ft.AlertDialog):
+        dialog.open = False
+        dialog.update() # Atualiza apenas o diálogo (para fechar)
+
+    def search_rep():
+        page.go(f"/projetos/{projeto_id}?refresh={random.randint(0, 100000)}")
+        
+    def criar_rep_celula(conteudo, largura=None, alinhamento=ft.alignment.center_left):
+        return ft.Container(
+            content=conteudo,
+            width=largura,
+            padding=10,
+            alignment=alinhamento,
+        )
+
+    cabecalho = ft.Row(
+        controls=[
+            criar_rep_celula(ft.Text("Repositório", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+            criar_rep_celula(ft.Text("Data Hora", weight=ft.FontWeight.BOLD, color=COR_5), 200, ft.alignment.top_center),
+            criar_rep_celula(ft.Text("Projeto", weight=ft.FontWeight.BOLD, color=COR_5), 350, ft.alignment.top_center),
+            criar_rep_celula(ft.Text("Usuário", weight=ft.FontWeight.BOLD, color=COR_5), 200, ft.alignment.top_center),
+            criar_rep_celula(ft.Text("Tipo Arq.", weight=ft.FontWeight.BOLD, color=COR_5), 100, ft.alignment.top_center),
+            criar_rep_celula(ft.Text("", weight=ft.FontWeight.BOLD, color=COR_5), 150, ft.alignment.top_center),
+        ],
+        spacing=0,
+        vertical_alignment=ft.CrossAxisAlignment.START
+    )
+
+    # Corpo da tabela com scroll
+    linhas = []
+    zebrado = False
+    if rep_data:
+        for rep in rep_data:
+            if zebrado:
+                cor_zebrado = COR_3
+                # cor_zebrado = "#A2BCE0"
+                # cor_zebrado = "#F17E69"
+            else:
+                cor_zebrado = ft.Colors.WHITE
+            zebrado = not zebrado
+            datahora = rep.get("datahora") # type: ignore
+            datahora = str(datahora)
+            if datahora.endswith('Z'):
+                datahora = datahora[:-1] + '+00:00'
+            # 1. Converte a string ISO para um objeto datetime (que estará em UTC)
+            objeto_datetime = datetime.fromisoformat(datahora)
+            # 2. Converte o objeto datetime de UTC para o fuso horário de Recife (America/Recife, UTC-3)
+            datahora_recife = objeto_datetime.astimezone(ZoneInfo("America/Recife"))
+            datahora_br = datahora_recife.strftime('%d/%m/%Y %H:%M:%S')
+
+            linhas.append(
+                ft.Container(
+                    ft.Row(
+                        controls=[
+                            criar_rep_celula(ft.Text(rep.get("repositorioid"), weight=ft.FontWeight.BOLD), 150, ft.alignment.top_center),
+                            criar_rep_celula(
+                                ft.Text(
+                                    datahora_br,
+                                    overflow=ft.TextOverflow.ELLIPSIS,
+                                    selectable=True,
+                                ), 
+                                200
+                            ),
+                            criar_rep_celula(
+                                ft.Text(
+                                    rep.get('projeto', {}).get("projeto"),
+                                    max_lines=2,
+                                    overflow=ft.TextOverflow.ELLIPSIS,
+                                    tooltip=rep.get('projeto', {}).get("projeto"),
+                                    selectable=True,
+                                ), 
+                                350
+                            ),
+                            criar_rep_celula(
+                                ft.Text(
+                                    rep.get("usuario", {}).get("nome"),
+                                    max_lines=2,
+                                    overflow=ft.TextOverflow.ELLIPSIS,
+                                    tooltip=rep.get("usuario", {}).get("nome"),
+                                    selectable=True,
+                                ), 
+                                200
+                            ),
+                            criar_rep_celula(ft.Text(rep.get("tipoarquivo")), 100, ft.alignment.top_center),
+                            criar_rep_celula(
+                                            ft.Row(
+                                                controls=[
+                                                    ft.IconButton(
+                                                        ft.Icons.VISIBILITY,
+                                                        icon_color=ft.Colors.BLACK,
+                                                        tooltip="Visualiza Repositório",
+                                                        on_click=lambda e, u=rep: open_markdown_dialog(u)
+                                                    ),  
+                                                    ft.IconButton(
+                                                        ft.Icons.REMOVE_SHARP,
+                                                        icon_color=ft.Colors.BLACK,
+                                                        tooltip="Apaga Repositório",
+                                                        on_click=lambda e, u=rep: open_delete_rep_dialog(u)
+                                                    ),
+                                                ],
+                                                alignment=ft.MainAxisAlignment.CENTER,  # Centraliza horizontalmente
+                                            ),
+                                150, ft.alignment.top_center
+                            )
+                        ],
+                        spacing=0,
+                        vertical_alignment=ft.CrossAxisAlignment.START
+                    ),
+                    bgcolor=cor_zebrado,
+                    padding=0,
+                    border=ft.border.only(
+                        top=ft.border.BorderSide(1, COR_1),
+                    )
+                )
+            )
+    # Tabela completa
+    tabela = ft.Column(
+        controls=[
+            # Cabeçalho fixo
+            ft.Container(
+                cabecalho,
+                bgcolor=COR_1,
+                # padding=10,
+                padding=ft.padding.only(left=10, right=10, top=10, bottom=10),
+                border=ft.border.only(
+                    top=ft.border.BorderSide(1, COR_1),
+                    left=ft.border.BorderSide(1, COR_1),
+                    right=ft.border.BorderSide(1, COR_1)
+                )
+            ),
+            # Corpo com scroll
+            ft.Container(
+                content=ft.ListView(
+                    controls=linhas,
+                    expand=True,
+                    spacing=0,
+                    padding=0,
+                ),
+                border=ft.border.only(
+                    bottom=ft.border.BorderSide(1, ft.Colors.BLACK),
+                    left=ft.border.BorderSide(1, ft.Colors.BLACK),
+                    right=ft.border.BorderSide(1, ft.Colors.BLACK)
+                ),
+                expand=True
+            )
+        ],
+        spacing=0,
+        # expand=True
+        width=1150,
+    )
+
     app_bar = create_appbar(
         page, api,
         titulo="App MC Sonae - Cadastro de Projetos - Visualizar Projeto",
@@ -1503,8 +1802,23 @@ def view_projeto_detail(page: ft.Page, api: ApiClient, projeto_id: int) -> ft.Vi
             ft.Container(
                 content=details,
                 padding=20,
-                alignment=ft.alignment.center,
-            )
+                alignment=ft.alignment.center_left,
+            ),
+            ft.Divider(),
+            ft.Column(
+                [
+                    ft.Row(
+                        controls=[
+                            tabela,
+                        ],
+                        expand=True,
+                        scroll=ft.ScrollMode.AUTO,
+                        vertical_alignment=ft.CrossAxisAlignment.START,
+                    )
+
+                ],
+                expand=True
+            ),
         ]
     )
 
@@ -1719,7 +2033,7 @@ def view_projetos_list(page: ft.Page, api: ApiClient) -> ft.View:
                         ]
                     ),
                     ft.ElevatedButton(
-                        "Novo usuário",
+                        "Novo projeto",
                         icon=ft.Icons.ADD,
                         style=button_style,
                         tooltip="Criar novo projeto",
@@ -1830,26 +2144,26 @@ def view_projeto_form(page: ft.Page, api: ApiClient, projeto_id: Optional[int] =
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
 
-def view_placeholder(page: ft.Page, api: ApiClient, title: str, route: str) -> ft.View:
-    """ Uma tela genérica para rotas ainda não implementadas. """
-    return ft.View(
-        route=route,
-        appbar=create_appbar(page, api),
-        controls=[
-            ft.Container(
-                content=ft.Column(
-                    [
-                        ft.Text(title, style=ft.TextThemeStyle.HEADLINE_MEDIUM),
-                        ft.Text("Esta página está em construção."),
-                        ft.ElevatedButton("Voltar ao Menu", on_click=lambda _: page.go("/menu"))
-                    ],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    alignment=ft.MainAxisAlignment.CENTER
-                ),
-                expand=True
-            )
-        ]
-    )
+# def view_placeholder(page: ft.Page, api: ApiClient, title: str, route: str) -> ft.View:
+#     """ Uma tela genérica para rotas ainda não implementadas. """
+#     return ft.View(
+#         route=route,
+#         appbar=create_appbar(page, api),
+#         controls=[
+#             ft.Container(
+#                 content=ft.Column(
+#                     [
+#                         ft.Text(title, style=ft.TextThemeStyle.HEADLINE_MEDIUM),
+#                         ft.Text("Esta página está em construção."),
+#                         ft.ElevatedButton("Voltar ao Menu", on_click=lambda _: page.go("/menu"))
+#                     ],
+#                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+#                     alignment=ft.MainAxisAlignment.CENTER
+#                 ),
+#                 expand=True
+#             )
+#         ]
+#     )
 
 # Renderiza a Tela de Anexar Arquivos ao Repositório.
 def view_repositorio_form(page: ft.Page, api: ApiClient) -> ft.View:
@@ -1962,7 +2276,7 @@ def view_repositorio_form(page: ft.Page, api: ApiClient) -> ft.View:
             indicador.update()
             return
 
-        print(docling_txt)
+        # print(docling_txt)
 
         # docling_txt = ""
         # Gera a data e hora atual no formato ISO 8601 UTC
@@ -2022,6 +2336,353 @@ def view_repositorio_form(page: ft.Page, api: ApiClient) -> ft.View:
                             ],
                             alignment=ft.MainAxisAlignment.CENTER
                         )
+                    ],
+                    spacing=15
+                ),
+                padding=20,
+                width=800,
+                alignment=ft.alignment.center
+            )
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
+
+# Renderiza a Tela de Consulta Projeto.
+def view_consulta_projeto_form(page: ft.Page, api: ApiClient) -> ft.View:
+    projetos = api.get_projetos()
+
+    projetos_options = []
+    if projetos is not None:
+        for projeto in projetos:
+            if projeto.get("status") == "Ativo": # type: ignore
+                projetos_options.append(ft.dropdown.Option(key=projeto.get("projetoid"), text=projeto.get("projeto")))
+
+    projeto_dropdown = ft.dropdown.Dropdown(
+        label="Projeto",
+        options=projetos_options,
+        width=500,
+    )
+
+    indicador = ft.ProgressRing(width=60, height=60, color=COR_1, visible=False)
+    tf_prompt = ft.TextField(label="Prompt Usuário", multiline=True, expand=True, max_lines=5)
+    link_control = ft.Markdown("", on_tap_link=lambda e: page.launch_url(e.data, web_window_name="blank")) # type: ignore
+
+    def criar_pu_celula(conteudo, largura=None, alinhamento=ft.alignment.center_left):
+        return ft.Container(
+            content=conteudo,
+            width=largura,
+            padding=10,
+            alignment=alinhamento,
+        )
+
+    cabecalho = ft.Row(
+        controls=[
+            criar_pu_celula(ft.Text("Data Hora", weight=ft.FontWeight.BOLD, color=COR_5), 200, ft.alignment.top_center),
+            criar_pu_celula(ft.Text("Prompt Usuário", weight=ft.FontWeight.BOLD, color=COR_5), 350, ft.alignment.top_center),
+            criar_pu_celula(ft.Text("", weight=ft.FontWeight.BOLD, color=COR_5), 50, ft.alignment.top_center),
+        ],
+        spacing=0,
+        vertical_alignment=ft.CrossAxisAlignment.START
+    )
+
+    def muda_prompt_usuario(pu_item):
+        tf_prompt.value = pu_item.get("prompt")
+        tf_prompt.update()
+        close_prompt_usuario_dialog(prompt_usuario_view_dialog)
+ 
+    tabela = None
+
+    def popula_prompt_usuario(e):
+        nonlocal tabela
+        pu_data = api.get_prompt_usuario(limit=10) # type: ignore
+
+        # Corpo da tabela com scroll
+        linhas = []
+        zebrado = False
+        if pu_data:
+            for pu in pu_data:
+                if zebrado:
+                    cor_zebrado = COR_3
+                else:
+                    cor_zebrado = ft.Colors.WHITE
+                zebrado = not zebrado
+                datahora = pu.get("datahora") # type: ignore
+                datahora = str(datahora)
+                if datahora.endswith('Z'):
+                    datahora = datahora[:-1] + '+00:00'
+                # 1. Converte a string ISO para um objeto datetime (que estará em UTC)
+                objeto_datetime = datetime.fromisoformat(datahora)
+                # 2. Converte o objeto datetime de UTC para o fuso horário de Recife (America/Recife, UTC-3)
+                datahora_recife = objeto_datetime.astimezone(ZoneInfo("America/Recife"))
+                datahora_br = datahora_recife.strftime('%d/%m/%Y %H:%M:%S')
+
+                linhas.append(
+                    ft.Container(
+                        ft.Row(
+                            controls=[
+                                criar_pu_celula(
+                                    ft.Text(
+                                        datahora_br,
+                                        overflow=ft.TextOverflow.ELLIPSIS,
+                                        selectable=True,
+                                    ), 
+                                    200
+                                ),
+                                criar_pu_celula(
+                                    ft.Text(
+                                        pu.get('prompt'),
+                                        max_lines=2,
+                                        overflow=ft.TextOverflow.ELLIPSIS,
+                                        tooltip=pu.get('prompt'),
+                                        selectable=True,
+                                    ), 
+                                    350
+                                ),
+                                criar_pu_celula(
+                                                ft.Row(
+                                                    controls=[
+                                                        ft.IconButton(
+                                                            ft.Icons.BADGE,
+                                                            icon_color=ft.Colors.BLACK,
+                                                            tooltip="Muda Prompt Visualiza Repositório",
+                                                            on_click=lambda e, u=pu: muda_prompt_usuario(u)
+                                                        )
+                                                    ],
+                                                    alignment=ft.MainAxisAlignment.CENTER,  # Centraliza horizontalmente
+                                                ),
+                                    150, ft.alignment.top_center
+                                )
+                            ],
+                            spacing=0,
+                            vertical_alignment=ft.CrossAxisAlignment.START
+                        ),
+                        bgcolor=cor_zebrado,
+                        padding=0,
+                        border=ft.border.only(
+                            top=ft.border.BorderSide(1, COR_1),
+                        )
+                    )
+                )
+
+        # Tabela completa
+        tabela = ft.Column(
+            controls=[
+                # Cabeçalho fixo
+                ft.Container(
+                    cabecalho,
+                    bgcolor=COR_1,
+                    # padding=10,
+                    padding=ft.padding.only(left=10, right=10, top=10, bottom=10),
+                    border=ft.border.only(
+                        top=ft.border.BorderSide(1, COR_1),
+                        left=ft.border.BorderSide(1, COR_1),
+                        right=ft.border.BorderSide(1, COR_1)
+                    )
+                ),
+                # Corpo com scroll
+                ft.Container(
+                    content=ft.ListView(
+                        controls=linhas,
+                        expand=True,
+                        spacing=0,
+                        padding=0,
+                    ),
+                    border=ft.border.only(
+                        bottom=ft.border.BorderSide(1, ft.Colors.BLACK),
+                        left=ft.border.BorderSide(1, ft.Colors.BLACK),
+                        right=ft.border.BorderSide(1, ft.Colors.BLACK)
+                    ),
+                    expand=True
+                )
+            ],
+            spacing=0,
+            # expand=True
+            width=600,
+        )
+
+        prompt_usuario_view_dialog.content.content = tabela # type: ignore
+
+        open_prompt_usuario_dialog()
+
+    prompt_usuario_view_dialog = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Prompt do Usuário"),
+        content=ft.Container(
+            content=tabela,
+            width=800,
+            height=600,
+        ),
+        actions=[ft.TextButton("Fechar", style=button_style, on_click=lambda _: close_prompt_usuario_dialog(prompt_usuario_view_dialog))],
+        actions_alignment=ft.MainAxisAlignment.END,
+    )
+
+    page.overlay.append(prompt_usuario_view_dialog)
+
+    def open_prompt_usuario_dialog():
+        prompt_usuario_view_dialog.content.update() # type: ignore
+        prompt_usuario_view_dialog.open = True
+        prompt_usuario_view_dialog.update() # Atualiza apenas o diálogo (para abrir)
+
+    def close_prompt_usuario_dialog(dialog: ft.AlertDialog):
+        dialog.open = False
+        dialog.update()
+
+    def on_consultar_click(e):
+        link_control.value = ""
+        link_control.update()
+
+        # Testes
+        # file_name = SERVIDOR_WEB+"resultado_gemini.html" # type: ignore
+        # # file_name = "resultado_gemini.html"
+        # # file_name = "https://www.google.com"
+        # # file_url = f"/assets/{file_name}"
+        # file_url = file_name
+        # link_control.value = f"[Clique aqui para ver o resultado]({file_url})"
+        # link_control.update()
+
+        if projeto_dropdown.value is None:
+            show_snackbar(page, "Projeto inválido.", ft.Colors.RED)
+            return 
+        indicador.visible = True
+        indicador.update()
+        try:
+            promptgeral = api.get_prompt_geral(prompt_id=1)
+            if promptgeral is None:
+                show_snackbar(page, "Prompt Geral inválido.", ft.Colors.RED)
+                return 
+            
+            projeto_id_selecionado = projeto_dropdown.value
+            projeto_texto_selecionado = "Nome do Projeto não encontrado"
+            for opt in projetos_options:
+                if opt.key == int(projeto_id_selecionado):
+                    projeto_texto_selecionado = opt.text
+                    break
+
+            repositorio = api.get_repositorios(search_term=projeto_id_selecionado) # type: ignore
+            if repositorio is None:
+                show_snackbar(page, "Não existem repositórios para este projeto.", ft.Colors.RED)
+                return 
+            comando = f"# Projeto: {projeto_id_selecionado, projeto_texto_selecionado}\n"
+            comando += "# Prompt Geral: \n"
+            comando += promptgeral.get("prompt") + "\n" # type: ignore
+            if tf_prompt.value:
+                comando += "# Prompt Usuário: \n"
+                comando += tf_prompt.value + "\n"
+            comando += "# Repositórios: \n"
+            for repo in repositorio:
+                comando += repo.get("markdown") + "\n"
+
+            print(f"Prompt: {len(comando.encode('utf-8'))} bytes")
+
+            if tf_prompt.value:
+               data_hora_utc = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+               data = {
+                    "prompt": tf_prompt.value,
+                    "usuarioid": 0,
+                    "datahora": data_hora_utc,
+               }
+               success, message = api.create_prompt_usuario(data) # type: ignore
+
+            print("Início Consulta a API Gemini")
+
+            client = genai.Client(api_key=CHAVE_API_GEMINI)
+
+            response = client.models.generate_content(
+                model="gemini-2.5-flash", contents=comando
+            )
+
+            # print(response.text)
+
+            if response.text:
+                print(f"Resposta IA: {len(response.text.encode('utf-8'))} bytes")
+                # resultado_html = response.text
+                resultado_html = response.text.replace("```html", "").replace("```", "").strip()
+
+                diretorio_base = os.path.dirname(os.path.abspath(__file__))
+                file_name = "resultado_gemini.html"
+                static_file_path = os.path.join(diretorio_base, "assets", file_name)
+                
+                print(static_file_path)
+
+                with open(static_file_path, "w", encoding="utf-8") as f:
+                    f.write(resultado_html)
+
+                file_url = f"{SERVIDOR_WEB}{file_name}"
+
+                link_control.value = f"[Clique aqui para ver o resultado]({file_url})"
+                link_control.update()
+
+                # b64_html = base64.b64encode(resultado_html.replace("```html", "").replace("```", "").strip().encode('utf-8')).decode('utf-8')
+                # data_uri = f"data:text/html;base64,{b64_html}"
+
+                # page.launch_url(data_uri)
+                # page.update()
+
+                # html_encoded = urllib.parse.quote(resultado_html.'replace("```html", "").replace("```", "").strip'())
+                # link_control.value = f"[Clique aqui para ver o resultado](data:text/html,{b64_html})"
+                # link_control.value = f"[Clique aqui para ver o resultado]({data_uri})"
+                # link_control.update()
+            else:
+                show_snackbar(page, "Erro ao consultar o processo.", ft.Colors.RED)
+                return
+
+            print("Fim Consulta a API Gemini")
+
+            indicador.visible = False
+            indicador.update()
+
+        except Exception as ex:
+            indicador.visible = False
+            indicador.update()
+            print(f"Erro ao consultar o processo: {ex}")
+            show_snackbar(page, f"Erro ao consultar o processo: {ex}", ft.Colors.RED)
+            indicador.visible = False
+            indicador.update()
+            return
+
+    app_bar = create_appbar(
+        page, api,
+        titulo="App MC Sonae - Consultar Projeto", 
+        leading_control=ft.IconButton(icon=ft.Icons.ARROW_BACK, on_click=lambda _: page.go("/menu"), tooltip="Voltar")
+    )
+
+    bt_consultar = ft.ElevatedButton("Consultar Projeto", style=button_style, on_click=on_consultar_click, icon=ft.Icons.SCREEN_SEARCH_DESKTOP)
+    bt_promptusuario = ft.ElevatedButton("...", tooltip="Escolher Prompt Usuário", style=button_style, on_click=popula_prompt_usuario)
+
+    return ft.View(
+        route=f"/consultar",
+        appbar=app_bar,
+        controls=[
+            ft.Container(
+                content=ft.Column(
+                    [
+                        ft.Text("Anexar Consultar Projeto", style=ft.TextThemeStyle.HEADLINE_MEDIUM),
+                        projeto_dropdown,
+                        ft.Row(
+                            [
+                                tf_prompt,
+                                bt_promptusuario,
+                            ],
+                            alignment=ft.MainAxisAlignment.END
+                        ),
+                        ft.Row(
+                            [
+                                bt_consultar,
+                            ],
+                            alignment=ft.MainAxisAlignment.END
+                        ),
+                        ft.Row(
+                            [
+                                indicador,
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER
+                        ),
+                        ft.Row(
+                            [
+                                link_control,
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER
+                        ),
                     ],
                     spacing=15
                 ),
@@ -2135,9 +2796,11 @@ def main(page: ft.Page):
             elif troute.match("/repositorio"):
                 page.views.append(view_repositorio_form(page, api))
             elif troute.match("/consultar"):
-                page.views.append(view_placeholder(page, api, "Consultar Projeto", "/consultar"))
+                # page.views.append(view_placeholder(page, api, "Consultar Projeto", "/consultar"))
+                page.views.append(view_consulta_projeto_form(page, api))
             elif troute.match("/promptgeral"):
                 page.views.append(view_promtgeral_form(page, api, prompt_id=1))
+
             # Adicione outras rotas aqui...
 
         else:
@@ -2170,5 +2833,6 @@ if __name__ == "__main__":
         target=main, 
         view=ft.AppView.WEB_BROWSER,
         port=8550,
-        upload_dir="uploads"
+        upload_dir="uploads",
+        assets_dir="assets"
     )

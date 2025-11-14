@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto: Negócios Complementares de Retalho - Apresentação de Resultados - Fase 1 Projeto Fénix</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        h2 {
+            font-size: 1.5em;
+            border-color: #2980b9;
+        }
+        h3 {
+            font-size: 1.2em;
+            border-color: #34495e;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e9f5fd;
+        }
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .chart-item {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        @media (max-width: 768px) {
+            .chart-item {
+                flex-basis: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Projeto: 3, Negócios Complementares de Retalho</h1>
+        <h2>Apresentação de Resultados - Fase 1 Projeto Fénix</h2>
+        <p><strong>Data:</strong> 26 de Agosto de 2025</p>
+
+        <h3>Resumo do Documento:</h3>
+        <ul>
+            <li>**Objetivos da Fase 1:** Os principais objetivos incluíram o desenvolvimento e teste do protótipo da interface do utilizador (UI), a integração da API de pagamentos com a realização de testes de transação, e a validação do conceito inicial com um grupo de foco.</li>
+            <li>**Resultados Chave:** O protótipo funcional foi entregue 5 dias antes do prazo estipulado. O feedback inicial do grupo de foco registou uma taxa de aprovação de 85%. O custo da Fase 1 ficou 3% abaixo do orçamentado, resultando numa poupança de €2.500. Além disso, não foi identificado nenhum bug crítico durante os testes de integração.</li>
+            <li>**Próximas Etapas (Fase 2):** A Fase 2 prevê o início do desenvolvimento do back-end baseado no protótipo validado, a realização de testes de performance e stress com o novo hardware, e o planeamento da campanha de marketing para o lançamento beta.</li>
+        </ul>
+
+        <h3>Dados Quantitativos Relevantes:</h3>
+        <div class="charts-container">
+            <div class="chart-item">
+                <canvas id="aprovacaoGrupoFoco"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="poupançaCustoFase1"></canvas>
+            </div>
+        </div>
+
+        <h3>Tabela de Dados:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Valor</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Data da Apresentação</td>
+                    <td>26 de Agosto de 2025</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Antecipação na Entrega do Protótipo</td>
+                    <td>5 dias</td>
+                    <td>Em relação ao prazo estipulado</td>
+                </tr>
+                <tr>
+                    <td>Taxa de Aprovação do Grupo de Foco</td>
+                    <td>85%</td>
+                    <td>Feedback inicial</td>
+                </tr>
+                <tr>
+                    <td>Custo da Fase 1 (Comparado ao Orçamento)</td>
+                    <td>3% abaixo</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Poupança Gerada na Fase 1</td>
+                    <td>€2.500</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Bugs Críticos Identificados</td>
+                    <td>Nenhum</td>
+                    <td>Nos testes de integração</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico de Aprovação do Grupo de Foco
+            const ctxAprovacao = document.getElementById('aprovacaoGrupoFoco');
+            if (ctxAprovacao) {
+                new Chart(ctxAprovacao, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Aprovado', 'Não Aprovado'],
+                        datasets: [{
+                            data: [85, 15], // 85% aprovado, 15% restante
+                            backgroundColor: ['#28a745', '#dc3545'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Taxa de Aprovação do Grupo de Foco',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Gráfico de Poupança de Custo da Fase 1
+            const ctxPoupança = document.getElementById('poupançaCustoFase1');
+            if (ctxPoupança) {
+                new Chart(ctxPoupança, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Poupança Total'],
+                        datasets: [{
+                            label: 'Valor da Poupança (€)',
+                            data: [2500],
+                            backgroundColor: '#007bff',
+                            borderColor: '#0056b3',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Poupança de Custo da Fase 1 (3% abaixo do orçamentado)',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Poupança: €${context.parsed.y.toLocaleString('pt-BR')}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Valor (€)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

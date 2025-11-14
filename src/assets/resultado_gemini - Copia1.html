@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto: Retalho Alimentar</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            padding: 25px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-top: 25px;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            background-color: #fdfdfd;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            color: #495057;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e2e6ea;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 25px auto;
+            background-color: #fdfdfd;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .info-nao-processada {
+            font-style: italic;
+            color: #888;
+        }
+        .document-source {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>Projeto: Retalho Alimentar</h1>
+
+    <!-- Documento: MC Annual Report 2024 -->
+    <div class="container">
+        <h2>Relatório Anual MC 2024: Destaques do Retalho Alimentar</h2>
+        <div class="document-source">Fonte: MC Annual Report 2024</div>
+        <p>O Relatório Anual de 2024 da MC destaca a sua posição como retalhista líder em Portugal no segmento alimentar. A empresa demonstrou um sólido desempenho financeiro e operacional, impulsionado por uma estratégia focada no cliente, inovação e expansão da sua rede de lojas. Em 2024, a MC reforçou a sua liderança no retalho alimentar em Portugal, registando um crescimento robusto e um investimento significativo na modernização e expansão da sua rede de lojas, incluindo a celebração da 200.ª loja Continente Bom Dia. A empresa também se dedicou à digitalização, melhorando a experiência omnichannel e lançando iniciativas de sustentabilidade.</p>
+
+        <h3>Dados Chave (Retalho Alimentar, 2024)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrica (Retalho Alimentar)</th>
+                    <th>Valor (2024)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Crescimento Total Vendas (Portugal)</td>
+                    <td>7.1%</td>
+                </tr>
+                <tr>
+                    <td>Crescimento Vendas Like-for-like (Portugal)</td>
+                    <td>4.4%</td>
+                </tr>
+                <tr>
+                    <td>Novas Lojas Abertas (Mercearia)</td>
+                    <td>25 (24 Continente Bom Dia, 1 Continente Modelo)</td>
+                </tr>
+                <tr>
+                    <td>Lojas Remodeladas (Mercearia)</td>
+                    <td>24</td>
+                </tr>
+                <tr>
+                    <td>Total Lojas Continente Bom Dia</td>
+                    <td>Mais de 200</td>
+                </tr>
+                <tr>
+                    <td>Total Lojas ZU (Pet Care)</td>
+                    <td>60</td>
+                </tr>
+                <tr>
+                    <td>Total Lojas Note! (Papelaria)</td>
+                    <td>87</td>
+                </tr>
+                <tr>
+                    <td>Lead-time Pedidos Frutas e Legumes</td>
+                    <td>Reduzido de 48h para 24h</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Destaques Operacionais (Retalho Alimentar, 2024)</h3>
+        <ul>
+            <li>**Novo conceito Click&Go:** Lançamento de um novo conceito com balcões de serviço dedicados, resultando em crescimento significativo de pedidos entregues em menos de 5 minutos, melhorando a conveniência.</li>
+            <li>**200 lojas Continente Bom Dia:** Abertura da 200.ª loja, sublinhando o foco na expansão dos formatos de conveniência e proximidade.</li>
+            <li>**Novo posicionamento da marca Continente:** Lançamento da estratégia 'O Continente é de toda a gente', com foco em experiências personalizadas.</li>
+            <li>**Integração do Cartão Continente com serviços de entrega instantânea:** Expansão do programa de fidelidade para canais de compra cada vez mais relevantes e novas regiões, como os Açores.</li>
+            <li>**Expansão acelerada do modelo de self-checkout:** Instalação de terminais de self-checkout em mais de 200 lojas para uma experiência mais ágil.</li>
+            <li>**Redução do lead-time para frutas e legumes:** O prazo de entrega de pedidos foi reduzido de 48 para 24 horas, aumentando a frescura do produto e reduzindo o desperdício alimentar.</li>
+        </ul>
+
+        <h3>Portfólio (Retalho Alimentar, 2024)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Formato / Marca</th>
+                    <th>Descrição</th>
+                    <th>Número de Lojas (Operadas pela Empresa, 31 Dez 2024)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Continente</td>
+                    <td>Hipermercados urbanos</td>
+                    <td>41</td>
+                </tr>
+                <tr>
+                    <td>Continente Modelo</td>
+                    <td>Grandes supermercados</td>
+                    <td>137</td>
+                </tr>
+                <tr>
+                    <td>Continente Bom Dia</td>
+                    <td>Supermercados de proximidade</td>
+                    <td>201</td>
+                </tr>
+                <tr>
+                    <td>Meu Super</td>
+                    <td>Supermercados de proximidade (franchise)</td>
+                    <td>289</td>
+                </tr>
+                <tr>
+                    <td>Continente Online</td>
+                    <td>Plataforma de e-commerce</td>
+                    <td>186 locais Click & Go</td>
+                </tr>
+                <tr>
+                    <td>ZU</td>
+                    <td>Bandeira de produtos e serviços para animais de estimação</td>
+                    <td>60</td>
+                </tr>
+                <tr>
+                    <td>Note!</td>
+                    <td>Papelaria, livros e serviços de conveniência</td>
+                    <td>87</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="chart-container">
+            <h3>Crescimento das Vendas no Retalho Alimentar (Portugal, 2024)</h3>
+            <canvas id="mcAnnual2024GrowthChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Distribuição da Rede de Lojas (Operadas pela Empresa, 31 Dez 2024)</h3>
+            <canvas id="mcAnnual2024StoresChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Documento: MC Financial Performance 2022 Summary -->
+    <div class="container">
+        <h2>Desempenho Financeiro da MC em 2022: Ênfase no Retalho Alimentar</h2>
+        <div class="document-source">Fonte: MC Financial Performance 2022 summary</div>
+        <p>Em 2022, a MC demonstrou um desempenho financeiro robusto num ambiente económico desafiador, com um foco claro em apoiar as famílias e oferecer propostas de valor acessíveis e de alta qualidade. O negócio alimentar, que constitui a maior parte das operações da MC, teve um desempenho favorável, com crescimento das vendas e ganhos de quota de mercado. A empresa investiu significativamente na expansão e modernização da sua rede de lojas e infraestruturas logísticas, ao mesmo tempo que procurava otimizar a eficiência operacional face à pressão dos custos energéticos.</p>
+
+        <h3>Dados Chave (MC Consolidado, com relevância para o Retalho Alimentar, 2022 vs 2021)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Valor (2022)</th>
+                    <th>Valor (2021)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Volume de Negócios Consolidado</td>
+                    <td>€5,978 milhões</td>
+                    <td>€5,361 milhões</td>
+                </tr>
+                <tr>
+                    <td>Crescimento Total Anual</td>
+                    <td>11.5%</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Crescimento Like-for-Like</td>
+                    <td>9.6%</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>EBITDA</td>
+                    <td>€565 milhões</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Margem EBITDA</td>
+                    <td>9.5%</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Resultado Líquido (Operações Continuadas)</td>
+                    <td>€179 milhões</td>
+                    <td>€218 milhões</td>
+                </tr>
+                <tr>
+                    <td>Investimento Operacional</td>
+                    <td>€218 milhões</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Novas Lojas Próprias Abertas</td>
+                    <td>65 (2 grandes, 15 proximidade no Alimentar)</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Lojas Remodeladas</td>
+                    <td>33</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Total de Lojas Próprias</td>
+                    <td>1,034</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Área Bruta de Venda (Lojas Próprias)</td>
+                    <td>851 mil m²</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Crescimento Vendas Online</td>
+                    <td>3.4%</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+                <tr>
+                    <td>Dívida Financeira Líquida</td>
+                    <td>€408 milhões</td>
+                    <td>€379 milhões</td>
+                </tr>
+                <tr>
+                    <td>Rácio Dívida Líquida Total / EBITDA</td>
+                    <td>2.7x</td>
+                    <td>INFORMAÇÃO NÃO PROCESSADA</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Destaques Adicionais (2022)</h3>
+        <ul>
+            <li>O negócio Alimentar, incluindo formatos de proximidade e de maior dimensão, observou um desempenho favorável.</li>
+            <li>Forte investimento da MC em preço, intensidade promocional e marca própria para reforçar a competitividade.</li>
+            <li>As vendas online da MC tiveram uma evolução positiva, aumentando 3.4% no ano e mais que duplicando face aos níveis pré-pandemia.</li>
+            <li>Rentabilidade operacional pressionada por "trading down", investimentos em preço e aumentos dos preços da energia.</li>
+            <li>Conclusão da ampliação e remodelação do centro de distribuição da Maia.</li>
+        </ul>
+
+        <div class="chart-container">
+            <h3>Volume de Negócios Consolidado e Crescimento da MC (2022)</h3>
+            <canvas id="mc2022TurnoverGrowthChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>EBITDA e Margem EBITDA da MC (2022)</h3>
+            <canvas id="mc2022EBITDAChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Documento: MC Financial Statements 2022 and 2021 -->
+    <div class="container">
+        <h2>Demonstrações Financeiras Consolidadas da MC (2022 e 2021)</h2>
+        <div class="document-source">Fonte: MC Financial Statements 2022 and 2021</div>
+        <p>As demonstrações financeiras consolidadas da MC para os exercícios de 2022 e 2021 refletem o desempenho financeiro do grupo na sua totalidade. Embora estes dados não sejam desagregados por segmento de "Retalho Alimentar", a MC é predominantemente um player no setor alimentar, o que torna estes resultados gerais altamente representativos da saúde financeira do seu negócio principal.</p>
+        <p>Em 2022, o grupo apresentou um crescimento nas vendas e melhorias nos fluxos de caixa operacionais, apesar de um ligeiro decréscimo no lucro líquido atribuível aos acionistas em operações continuadas comparado a 2021, influenciado por pressões operacionais.</p>
+
+        <h3>Dados Chave (Grupo MC Consolidado, 2022 vs 2021)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrica (Consolidado)</th>
+                    <th>Valor (2022)</th>
+                    <th>Valor (2021)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Vendas Totais (Vendas + Prestações de serviços)</td>
+                    <td>€5,978,336,836</td>
+                    <td>€5,361,631,946</td>
+                </tr>
+                <tr>
+                    <td>Resultado Líquido (Atribuível aos Acionistas, Operações Continuadas)</td>
+                    <td>€179,241,981</td>
+                    <td>€176,031,131</td>
+                </tr>
+                <tr>
+                    <td>Total de Ativos</td>
+                    <td>€4,316,066,881</td>
+                    <td>€4,161,286,302</td>
+                </tr>
+                <tr>
+                    <td>Capital Próprio Total</td>
+                    <td>€867,147,731</td>
+                    <td>€921,811,383</td>
+                </tr>
+                <tr>
+                    <td>Inventários</td>
+                    <td>€455,384,024</td>
+                    <td>€387,406,042</td>
+                </tr>
+                <tr>
+                    <td>Ativos Fixos Tangíveis</td>
+                    <td>€1,395,172,455</td>
+                    <td>€1,360,810,433</td>
+                </tr>
+                <tr>
+                    <td>Ativos sob Direito de Uso</td>
+                    <td>€945,066,393</td>
+                    <td>€933,496,274</td>
+                </tr>
+                <tr>
+                    <td>Fluxos de Caixa Operacionais Líquidos</td>
+                    <td>€573,751,667</td>
+                    <td>€514,717,912</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p><i>Nota: Os dados apresentados referem-se ao desempenho consolidado do grupo MC. A MC é predominantemente um player no retalho alimentar, o que torna estes resultados gerais altamente representativos do segmento de Retalho Alimentar.</i></p>
+
+        <div class="chart-container">
+            <h3>Desempenho Financeiro Consolidado da MC (2021 vs 2022)</h3>
+            <canvas id="mcFinancialStatementsChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Chart for MC Annual Report 2024 - Sales Growth
+        const mcAnnual2024GrowthCtx = document.getElementById('mcAnnual2024GrowthChart').getContext('2d');
+        new Chart(mcAnnual2024GrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Crescimento Total Vendas', 'Crescimento Vendas Like-for-like'],
+                datasets: [{
+                    label: 'Crescimento (%)',
+                    data: [7.1, 4.4],
+                    backgroundColor: ['#28a745', '#17a2b8'],
+                    borderColor: ['#28a745', '#17a2b8'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Percentagem (%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Crescimento das Vendas no Retalho Alimentar (Portugal, 2024)'
+                    }
+                }
+            }
+        });
+
+        // Chart for MC Annual Report 2024 - Store Distribution
+        const mcAnnual2024StoresCtx = document.getElementById('mcAnnual2024StoresChart').getContext('2d');
+        new Chart(mcAnnual2024StoresCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Hipermercados Urbanos', 'Supermercados Grandes', 'Supermercados de Proximidade', 'Franchise Proximity (Meu Super)', 'E-commerce (Click & Go Locations)', 'ZU (Pet Care)', 'Note! (Papelaria)'],
+                datasets: [{
+                    label: 'Número de Lojas',
+                    data: [41, 137, 201, 289, 186, 60, 87],
+                    backgroundColor: [
+                        '#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6610f2', '#fd7e14'
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribuição da Rede de Lojas (Operadas pela Empresa, 31 Dez 2024)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + ' lojas';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for MC Financial Performance 2022 Summary - Turnover & Growth
+        const mc2022TurnoverGrowthCtx = document.getElementById('mc2022TurnoverGrowthChart').getContext('2d');
+        new Chart(mc2022TurnoverGrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Volume de Negócios Consolidado (€)', 'Crescimento Total Anual (%)', 'Crescimento Like-for-Like (%)'],
+                datasets: [{
+                    label: 'Valores',
+                    data: [5978000000, 11.5, 9.6],
+                    backgroundColor: ['#007bff', '#28a745', '#17a2b8'],
+                    borderColor: ['#007bff', '#28a745', '#17a2b8'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        type: 'logarithmic', // Use logarithmic scale for turnover, linear for percentages
+                        title: {
+                            display: true,
+                            text: 'Valor / Percentagem'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                if (index === 0) return '0'; // Handle 0 separately for log scale
+                                if (value >= 1000000000) return (value / 1000000000).toFixed(1) + ' B€';
+                                if (value >= 1000000) return (value / 1000000).toFixed(1) + ' M€';
+                                if (value < 100) return value + '%'; // For percentages
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Volume de Negócios Consolidado e Crescimento da MC (2022)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    if (context.dataIndex === 0) {
+                                        label += '€' + (context.parsed.y / 1000000).toFixed(0) + ' milhões';
+                                    } else {
+                                        label += context.parsed.y + '%';
+                                    }
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for MC Financial Performance 2022 Summary - EBITDA
+        const mc2022EBITDACtx = document.getElementById('mc2022EBITDAChart').getContext('2d');
+        new Chart(mc2022EBITDACtx, {
+            type: 'bar',
+            data: {
+                labels: ['EBITDA (€)', 'Margem EBITDA (%)'],
+                datasets: [{
+                    label: 'Valores',
+                    data: [565000000, 9.5],
+                    backgroundColor: ['#6f42c1', '#20c997'],
+                    borderColor: ['#6f42c1', '#20c997'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        type: 'logarithmic',
+                        title: {
+                            display: true,
+                            text: 'Valor / Percentagem'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                if (index === 0) return '0';
+                                if (value >= 1000000) return (value / 1000000).toFixed(1) + ' M€';
+                                if (value < 100) return value + '%';
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'EBITDA e Margem EBITDA da MC (2022)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    if (context.dataIndex === 0) {
+                                        label += '€' + (context.parsed.y / 1000000).toFixed(0) + ' milhões';
+                                    } else {
+                                        label += context.parsed.y + '%';
+                                    }
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart for MC Financial Statements 2022 and 2021
+        const mcFinancialStatementsCtx = document.getElementById('mcFinancialStatementsChart').getContext('2d');
+        new Chart(mcFinancialStatementsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Vendas Totais (€)', 'Resultado Líquido (Operações Continuadas) (€)', 'Total de Ativos (€)', 'Capital Próprio Total (€)'],
+                datasets: [
+                    {
+                        label: '2021',
+                        data: [5361631946, 176031131, 4161286302, 921811383],
+                        backgroundColor: '#007bff',
+                        borderColor: '#007bff',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2022',
+                        data: [5978336836, 179241981, 4316066881, 867147731],
+                        backgroundColor: '#28a745',
+                        borderColor: '#28a745',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        type: 'logarithmic',
+                        title: {
+                            display: true,
+                            text: 'Valor (€)'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                if (index === 0) return '0';
+                                if (value >= 1000000000) return (value / 1000000000).toFixed(1) + ' B€';
+                                if (value >= 1000000) return (value / 1000000).toFixed(1) + ' M€';
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Desempenho Financeiro Consolidado da MC (2021 vs 2022)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += '€' + (context.parsed.y / 1000000).toFixed(0) + ' milhões';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
